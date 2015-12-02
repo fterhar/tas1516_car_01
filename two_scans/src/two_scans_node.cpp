@@ -20,8 +20,10 @@ class My_Scan {
         void backScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan);
      private:
         ros::NodeHandle node_;
-        laser_geometry::LaserProjection projector_;
-        tf::TransformListener tfListener_;
+        laser_geometry::LaserProjection projector_front_;
+        laser_geometry::LaserProjection projector_back_;
+        tf::TransformListener tfListener_front_;
+        tf::TransformListener tfListener_back_;
 
         ros::Publisher point_cloud_publisher_;
         ros::Subscriber front_scan_sub_;
@@ -61,20 +63,39 @@ My_Scan::My_Scan(){
 	received_front_scan = false;
 	received_back_scan = false;
 	
-    front_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan", 100, &My_Scan::frontScanCallback, this);
-    back_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan_back", 100, &My_Scan::backScanCallback, this);
-    point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud2> ("/two_scans", 100, false);
+    front_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan", 1000, &My_Scan::frontScanCallback, this);
+    back_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan_back", 1000, &My_Scan::backScanCallback, this);
+    point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud2> ("/two_scans_cloud", 1000, false);
+    
+    tfListener_front_.setExtrapolationLimit(ros::Duration(0.1));
+    tfListener_back_.setExtrapolationLimit(ros::Duration(0.1));
 }
 
 void My_Scan::frontScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan){
-    projector_.transformLaserScanToPointCloud("base_link", *scan, front_scan_cloud, tfListener_);
+	ROS_INFO("Received front scan");
+	
+	if(!tfListener_front_.waitForTransform(scan->header.frame_id, "/base_link", scan->header.stamp + ros::Duration().fromSec(scan->ranges.size()*scan->time_increment),ros::Duration(1.0))){
+     	return;
+    }
+	
+	try {
+     	projector_front_.transformLaserScanToPointCloud("/base_link", *scan, front_scan_cloud, tfListener_front_);
+    } catch (int err) {}
     received_front_scan = true;
     
     sendScan();
 }
 
 void My_Scan::backScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan){
-    projector_.transformLaserScanToPointCloud("base_link", *scan, back_scan_cloud, tfListener_);
+	ROS_INFO("Received back scan");
+	
+	if(!tfListener_back_.waitForTransform(scan->header.frame_id, "/base_link", scan->header.stamp + ros::Duration().fromSec(scan->ranges.size()*scan->time_increment),ros::Duration(1.0))){
+     	return;
+    }
+	
+	try {
+     	projector_back_.transformLaserScanToPointCloud("/base_link", *scan, back_scan_cloud, tfListener_back_);
+    } catch (int err) {}
     received_back_scan = true;
     
     sendScan();
