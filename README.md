@@ -27,4 +27,9 @@ This repository has two branches: master and simulation.
 		`rosrun simple_navigation_goals simple_navigation_goals_node` 
    REMEMBER: This branch only provides you a gazebo simulation model, additional details and control strategies need to be added to fullfil your tasks
 			
+=================================================================
+3. Run two_scans
 
+`rosrun two_scans two_scans_node`
+
+`roslaunch two_scans startCloudtoLaser.launch`
