@@ -63,7 +63,7 @@
 	  <param name="odom_alpha4" value="0.5"/>
 
 
-
+      <remap from="scan" to="/two_scan"/> 	<!-- changed -->
 
   </node>
 
