@@ -10,4 +10,4 @@
 
 ## Set right path for Eigen/core
 
-`sudo ln -s /usr/include/eigen3/Eigen /usr/local/include/Eigen
+`sudo ln -s /usr/include/eigen3/Eigen /usr/local/include/Eigen`
