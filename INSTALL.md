@@ -8,3 +8,6 @@
 
 `sudo apt-get install ros-indigo-hector-mapping ros-indigo-map-server ros-indigo-amcl ros-indigo-move-base`
 
+## Set right path for Eigen/core
+
+`sudo ln -s /usr/include/eigen3/Eigen /usr/local/include/Eigen
