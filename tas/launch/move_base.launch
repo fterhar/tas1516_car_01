@@ -62,7 +62,8 @@
 	  <param name="odom_alpha3" value="1.0"/>
 	  <param name="odom_alpha4" value="0.5"/>
 
-      <remap from="scan" to="/two_scan"/> 	<!-- changed by Tobias -->
+          <!-- changed by Tobias -->
+          <!-- <remap from="scan" to="/two_scan"/> -->
 
 
   </node>
