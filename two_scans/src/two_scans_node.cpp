@@ -63,41 +63,39 @@ My_Scan::My_Scan(){
 	received_front_scan = false;
 	received_back_scan = false;
 	
-    front_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan", 1000, &My_Scan::frontScanCallback, this);
-    back_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan_back", 1000, &My_Scan::backScanCallback, this);
-    point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud2> ("/two_scans_cloud", 1000, false);
+    front_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan", 10000, &My_Scan::frontScanCallback, this);
+    back_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan_back", 10000, &My_Scan::backScanCallback, this);
+    point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud2> ("/two_scans_cloud", 10000, false);
     
     tfListener_front_.setExtrapolationLimit(ros::Duration(0.1));
     tfListener_back_.setExtrapolationLimit(ros::Duration(0.1));
 }
 
 void My_Scan::frontScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan){
-	ROS_INFO("Received front scan");
-	
-	if(!tfListener_front_.waitForTransform(scan->header.frame_id, "/base_link", scan->header.stamp + ros::Duration().fromSec(scan->ranges.size()*scan->time_increment),ros::Duration(1.0))){
+    if(!tfListener_front_.waitForTransform(scan->header.frame_id, "/laser", scan->header.stamp + ros::Duration().fromSec(scan->ranges.size()*0.5),ros::Duration(2.0))){
      	return;
     }
 	
 	try {
-     	projector_front_.transformLaserScanToPointCloud("/base_link", *scan, front_scan_cloud, tfListener_front_);
-    } catch (int err) {}
+        projector_front_.transformLaserScanToPointCloud("/laser", *scan, front_scan_cloud, tfListener_front_);
+    } catch (int err) {ROS_INFO("ERROR front");}
     received_front_scan = true;
     
+    ROS_INFO("Received front scan");
     sendScan();
 }
 
 void My_Scan::backScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan){
-	ROS_INFO("Received back scan");
-	
-	if(!tfListener_back_.waitForTransform(scan->header.frame_id, "/base_link", scan->header.stamp + ros::Duration().fromSec(scan->ranges.size()*scan->time_increment),ros::Duration(1.0))){
+    if(!tfListener_back_.waitForTransform(scan->header.frame_id, "/laser", scan->header.stamp + ros::Duration().fromSec(scan->ranges.size()*0.5),ros::Duration(2.0))){
      	return;
     }
 	
 	try {
-     	projector_back_.transformLaserScanToPointCloud("/base_link", *scan, back_scan_cloud, tfListener_back_);
-    } catch (int err) {}
+        projector_back_.transformLaserScanToPointCloud("/laser", *scan, back_scan_cloud, tfListener_back_);
+    } catch (int err) {ROS_INFO("ERROR back");}
     received_back_scan = true;
     
+    ROS_INFO("Received back scan");
     sendScan();
 }
 
@@ -111,6 +109,7 @@ void My_Scan::sendScan(){
     received_back_scan = false;
     
     point_cloud_publisher_.publish(combined_scan);
+    ROS_INFO("Published to two_scans_cloud");
 }
 
 int main(int argc, char** argv)
