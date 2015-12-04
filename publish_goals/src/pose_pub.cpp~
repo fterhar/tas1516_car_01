@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 
   ros::NodeHandle n;
 
-  ros::Publisher pose_pub = n.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1, true);	//publish a message of type PoseStamped. This data is published on topic /move_base_simple/goal with buffer of 1. Send only if subscriber is there (true)
+  ros::Publisher pose_pub = n.advertise<geometry_msgs::PoseStamped>("/servo", 1,);	//publish a message of type PoseStamped. This data is published on topic /move_base_simple/goal with buffer of 1. Send only if subscriber is there (true)
 
   ros::Rate loop_rate(100); //every 10 ms (100 Hz)
 
