@@ -20,11 +20,15 @@ public:
 
     ros::NodeHandle nh_;
     ros::Publisher cmd_pub;
+    ros::Publisher tas_cmd_pub;
     ros::Subscriber cmd_sub;
     ros::Subscriber pose_sub; /* To check if inside boost areas */
   
     tf::TransformListener listener;
-  
+ 
+    bool isInBoostArea;
+    float speedGainFactor;
+ 
      /* Here are the Rectangles that define areas where speed boost can be used */ 
      Rect R1;// (Point(25.1, 8.65), Point(21.3, 17.1));
      Rect R2;// (Point(20.3, 17.5), Point(12.5, 20.4));
@@ -37,6 +41,7 @@ public:
 //    std_msgs::Int16 control_Brake; /* flag for brake */
 //    std_msgs::Int16 control_Mode; /* flag for car mode: manual or autonomous */
     geometry_msgs::Twist cmd_msg;
+    geometry_msgs::Twist tas_cmd_msg;
     geometry_msgs::PoseStamped pose_msg;
 
     double cmd_linearVelocity;

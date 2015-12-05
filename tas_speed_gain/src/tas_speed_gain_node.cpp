@@ -13,13 +13,16 @@ int main(int argc, char **argv)
 
   ros::NodeHandle n;
 
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(50);
   while(ros::ok())  
   {
+      speed_gain_controller.\
+	tas_cmd_pub.publish(speed_gain_controller.tas_cmd_msg);
+
       ros::spinOnce();
 
       loop_rate.sleep();
   }
 
-   return 0;
+  return 0;
 }
