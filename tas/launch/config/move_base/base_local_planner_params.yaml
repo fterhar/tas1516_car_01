@@ -7,7 +7,7 @@ TrajectoryPlannerROS:
   sim_time: 5.0
   sim_granularity: 0.25 #0.25
   sim_angular_granularity: 0.01 #0.025
-  dwa: false #true
+  dwa: true
   vx_samples: 5
   vtheta_samples: 20 
   max_vel_x: 3.0 #3.0

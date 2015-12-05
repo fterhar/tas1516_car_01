@@ -11,6 +11,7 @@
 #include "../rect/rect.h"
 #include "../rect/point.h"
 
+#include <tf/transform_listener.h>
 
 class control
 {
@@ -22,7 +23,9 @@ public:
     ros::Subscriber cmd_sub;
     ros::Subscriber pose_sub; /* To check if inside boost areas */
   
-    /* Here are the Rectangles that define areas where speed boost can be used */ 
+    tf::TransformListener listener;
+  
+     /* Here are the Rectangles that define areas where speed boost can be used */ 
      Rect R1;// (Point(25.1, 8.65), Point(21.3, 17.1));
      Rect R2;// (Point(20.3, 17.5), Point(12.5, 20.4));
      Rect R3;// (Point(10.3, 18.3), Point(11.2, 9.46));
