@@ -10,8 +10,9 @@
 #include <geometry_msgs/PoseStamped.h>
 #include "../rect/rect.h"
 #include "../rect/point.h"
-
 #include <tf/transform_listener.h>
+
+#define BOOST_MODE_OFF 0 //1
 
 class control
 {
@@ -23,10 +24,11 @@ public:
     ros::Publisher tas_cmd_pub;
     ros::Subscriber cmd_sub;
     ros::Subscriber pose_sub; /* To check if inside boost areas */
-  
+    ros::Subscriber wii_communication_sub; 
+   
     tf::TransformListener listener;
  
-    bool isInBoostArea;
+    bool  isInBoostArea;
     float speedGainFactor;
  
      /* Here are the Rectangles that define areas where speed boost can be used */ 
@@ -39,7 +41,7 @@ public:
 
     /* Vielleicht später noch wichtig: */
 //    std_msgs::Int16 control_Brake; /* flag for brake */
-//    std_msgs::Int16 control_Mode; /* flag for car mode: manual or autonomous */
+    std_msgs::Int16 control_Mode; /* manual or autonomous */
     geometry_msgs::Twist cmd_msg;
     geometry_msgs::Twist tas_cmd_msg;
     geometry_msgs::PoseStamped pose_msg;
@@ -53,9 +55,8 @@ private:
     void cmdCallback(const geometry_msgs::Twist::ConstPtr& msg);
     void poseCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
 
-    /* Vielleicht später wichtig: */   
- /* check the wii states and switch the flag for manual mode and autonomous mode */
- //   void wiiCommunicationCallback(const std_msgs::Int16MultiArray::ConstPtr& msg);
+    void wiiCommunicationCallback\
+	(const std_msgs::Int16MultiArray::ConstPtr& msg);
 
 };
 

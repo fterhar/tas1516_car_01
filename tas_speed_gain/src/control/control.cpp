@@ -2,8 +2,7 @@
 
 control::control()
 {
-   // cmd_pub = \
-	nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+    nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
 
     tas_cmd_pub = \
 	nh_.advertise<geometry_msgs::Twist>("tas_cmd_vel", 1);
@@ -16,8 +15,7 @@ control::control()
 	nh_.subscribe<geometry_msgs::PoseStamped>\
 	("slam_out_pose", 1000, &control::poseCallback,this);
 
-  /* Braucht man vielleicht später: */
-  //  wii_communication_sub = nh_.subscribe<std_msgs::Int16MultiArray>("wii_communication",1000,&control::wiiCommunicationCallback,this);
+    wii_communication_sub = nh_.subscribe<std_msgs::Int16MultiArray>("wii_communication",1000,&control::wiiCommunicationCallback,this);
     
     R1 = Rect(Point(25.1, 8.65), Point(21.3, 17.1));
     R2 = Rect(Point(20.3, 17.5), Point(12.5, 20.4));
@@ -31,16 +29,26 @@ control::control()
 //Subscribe to the local planner and map the steering angle (and the velocity-but we dont do that here-) to pulse width modulation values.
 void control::cmdCallback(const geometry_msgs::Twist::ConstPtr& msg)
 {
+	if (control_Mode.data == 0 || BOOST_MODE_OFF){
+	   /* In manual mode, speed boost should be off */ 
+	   tas_cmd_msg = *msg;
+	} else {
+	   /* Autonomous mode: Activate boost functionality */
+	   if (msg != 0){
+	      if(isInBoostArea){
+                 tas_cmd_msg = *msg;
+		 tas_cmd_msg.linear.x *= speedGainFactor;
+		 // ROS_INFO("Boost active!");
+              } else if (!isInBoostArea){
+                 tas_cmd_msg = *msg;
+		}
+	    }
+	}
+}
 
-    if (msg != 0){
-	if(isInBoostArea){
-	    tas_cmd_msg = *msg;
- 	    tas_cmd_msg.linear.x *= speedGainFactor;
-	    ROS_INFO("Boost active!");
-	} else if (!isInBoostArea){
-	    tas_cmd_msg = *msg;
-        }
-    }
+void control::wiiCommunicationCallback(const std_msgs::Int16MultiArray::ConstPtr& msg)
+{
+    control_Mode.data = msg->data[0];
 }
 
 void control::poseCallback(const geometry_msgs::PoseStamped::ConstPtr& pose)
