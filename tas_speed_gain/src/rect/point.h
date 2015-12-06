@@ -1,3 +1,9 @@
+
+/*
+ * Created by:  Fynn Terhar
+ * Modified by: -
+ */
+
 #ifndef POINT_H
 #define POINT_H
 

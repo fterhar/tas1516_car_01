@@ -1,3 +1,9 @@
+
+/*
+ * Created by:  Fynn Terhar
+ * Modified by: -
+ */
+
 #ifndef CONTROL_H
 #define CONTROL_H
 

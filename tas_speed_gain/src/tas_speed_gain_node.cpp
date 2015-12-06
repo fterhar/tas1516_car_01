@@ -1,3 +1,9 @@
+
+/*
+ * Created by:  Fynn Terhar
+ * Modified by: -
+ */
+
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "control/control.h"

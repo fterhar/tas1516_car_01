@@ -1,3 +1,9 @@
+
+/*
+ * Created by:  Fynn Terhar
+ * Modified by: -
+ */
+
 #ifndef RECT_H
 #define RECT_H
 

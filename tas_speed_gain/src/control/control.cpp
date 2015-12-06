@@ -1,3 +1,8 @@
+/*
+ * Created by:  Fynn Terhar
+ * Modified by: -
+ */
+
 #include "control.h"
 
 control::control()
@@ -51,6 +56,10 @@ void control::wiiCommunicationCallback(const std_msgs::Int16MultiArray::ConstPtr
     control_Mode.data = msg->data[0];
 }
 
+
+/* This part distinguishes wether car is in boost area or not.
+   It does not have to subscribe to PoseStamped, but can stay
+   like this for now. */
 void control::poseCallback(const geometry_msgs::PoseStamped::ConstPtr& pose)
 {
     /* Transform the received pose to the map frame: */
