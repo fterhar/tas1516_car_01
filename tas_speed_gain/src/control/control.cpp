@@ -25,7 +25,7 @@ control::control()
     R4 = Rect(Point(12.5, 3.71), Point(20.3, 9.15));
     
     isInBoostArea = false;
-    speedGainFactor = 200;
+    speedGainFactor = 2;
 }
 
 //Subscribe to the local planner and map the steering angle (and the velocity-but we dont do that here-) to pulse width modulation values.
