@@ -23,8 +23,8 @@ CMDVELACKERMANNBRIDGE::CMDVELACKERMANNBRIDGE():
 	m_Node.param("vehicleLength", m_vehicleLength, m_vehicleLength);
     //publisher and subscribers
 	m_ackermann_pub = m_Node.advertise<ackermann_msgs::AckermannDriveStamped>("ackermann_cmd", 10);
-	 m_cmd_sub = m_Node.subscribe<geometry_msgs::Twist>("cmd_vel", 10, &CMDVELACKERMANNBRIDGE::cmdCallback,this);  /* Original */
-	//m_cmd_sub = m_Node.subscribe<geometry_msgs::Twist>("tas_cmd_vel", 10, &CMDVELACKERMANNBRIDGE::cmdCallback,this);  /* Changed by Fynn */
+//	 m_cmd_sub = m_Node.subscribe<geometry_msgs::Twist>("cmd_vel", 10, &CMDVELACKERMANNBRIDGE::cmdCallback,this);  /* Original */
+	m_cmd_sub = m_Node.subscribe<geometry_msgs::Twist>("/tas_cmd_vel", 10, &CMDVELACKERMANNBRIDGE::cmdCallback,this);  /* Changed by Fynn */
 }
 CMDVELACKERMANNBRIDGE::~CMDVELACKERMANNBRIDGE()
 {

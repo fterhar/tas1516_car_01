@@ -25,7 +25,7 @@ control::control()
     R4 = Rect(Point(12.5, 3.71), Point(20.3, 9.15));
     
     isInBoostArea = false;
-    speedGainFactor = 2;
+    speedGainFactor = 200;
 }
 
 //Subscribe to the local planner and map the steering angle (and the velocity-but we dont do that here-) to pulse width modulation values.
@@ -36,7 +36,7 @@ void control::cmdCallback(const geometry_msgs::Twist::ConstPtr& msg)
 	if(isInBoostArea){
 	    tas_cmd_msg = *msg;
  	    tas_cmd_msg.linear.x *= speedGainFactor;
-
+	    ROS_INFO("Boost active!");
 	} else if (!isInBoostArea){
 	    tas_cmd_msg = *msg;
         }
@@ -65,11 +65,11 @@ void control::poseCallback(const geometry_msgs::PoseStamped::ConstPtr& pose)
 		transform.getOrigin().getY() );
 	if(R1.isInside(p) || R2.isInside(p) || \
 	   R3.isInside(p) || R4.isInside(p)){
-	    ROS_INFO\
+	   // ROS_INFO\
 		("Is in Boost area. Pos: (%f|%f)",p.x, p.y);
 	    isInBoostArea = true;
         } else {
-	    ROS_INFO\
+	   // ROS_INFO\
 		("Is not in Boost area. Pos: (%f|%f)",p.x, p.y);
 	    isInBoostArea = false;
 	}
