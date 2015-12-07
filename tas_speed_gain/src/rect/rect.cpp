@@ -74,19 +74,19 @@ boost::array<geometry_msgs::Pose, 6> Rect::generatePosesNeg(Point pa, Point pb){
 	poses[i].position.z = 0; 
    }
    poses[0].orientation = \
-	tf::createQuaternionMsgFromYaw(3 * M_PI - \
+	tf::createQuaternionMsgFromYaw(3 * M_PI/2 - \
 				       Point::getAngle(pa, pb)); 
    poses[1].orientation =  \
-	tf::createQuaternionMsgFromYaw(3 * M_PI);
+	tf::createQuaternionMsgFromYaw(3 * M_PI/2);
    poses[2].orientation = \
-	tf::createQuaternionMsgFromYaw(2 * M_PI);
+	tf::createQuaternionMsgFromYaw(M_PI);
    poses[3].orientation = \
-	tf::createQuaternionMsgFromYaw( (3 * M_PI - \
-				Point::getAngle(pa, pb)) - 2 * M_PI);
+	tf::createQuaternionMsgFromYaw( (3 * M_PI/2 - \
+				Point::getAngle(pa, pb)) - M_PI);
    poses[4].orientation =  \
 	tf::createQuaternionMsgFromYaw(0);
    poses[5].orientation =  \
-	tf::createQuaternionMsgFromYaw(M_PI);
+	tf::createQuaternionMsgFromYaw(M_PI/2);
  
    return poses;
 }
@@ -112,18 +112,18 @@ boost::array<geometry_msgs::Pose, 6> Rect::generatePosesPos(Point pa, Point pb){
 	poses[i].position.z = 0; 
    }
    poses[0].orientation =\
-	tf::createQuaternionMsgFromYaw(M_PI + Point::getAngle(pa, pb)); 
+	tf::createQuaternionMsgFromYaw(M_PI/2 + Point::getAngle(pa, pb)); 
    poses[1].orientation =\
-	tf::createQuaternionMsgFromYaw(M_PI);
+	tf::createQuaternionMsgFromYaw(M_PI/2);
    poses[2].orientation = \
-	tf::createQuaternionMsgFromYaw(2 * M_PI);
+	tf::createQuaternionMsgFromYaw(M_PI);
    poses[3].orientation = \
-	tf::createQuaternionMsgFromYaw(M_PI + Point::getAngle(pa, pb)\
-				            + 2 * M_PI);
+	tf::createQuaternionMsgFromYaw(M_PI/2 + Point::getAngle(pa, pb)\
+				            + M_PI);
    poses[4].orientation = \
 	tf::createQuaternionMsgFromYaw(0);
    poses[5].orientation = \
-	tf::createQuaternionMsgFromYaw(3 * M_PI);
+	tf::createQuaternionMsgFromYaw(3 * M_PI/2);
 
 
 //   poses[0].orientation.w = M_PI + Point::getAngle(pa, pb); 
