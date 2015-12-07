@@ -25,6 +25,9 @@ int main(int argc, char **argv)
       speed_gain_controller.\
 	tas_cmd_pub.publish(speed_gain_controller.tas_cmd_msg);
 
+      speed_gain_controller.\
+	rect_pub.publish(speed_gain_controller.rect_msg);
+
       ros::spinOnce();
 
       loop_rate.sleep();

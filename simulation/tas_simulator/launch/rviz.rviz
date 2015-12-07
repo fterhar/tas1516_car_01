@@ -8,6 +8,7 @@ Panels:
         - /Status1
         - /Map2
         - /Path1
+        - /PoseArray2
       Splitter Ratio: 0.5
     Tree Height: 463
   - Class: rviz/Selection
@@ -348,7 +349,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 4.80177e-38
+      Max Intensity: 999999
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: PointCloud
@@ -426,6 +427,13 @@ Visualization Manager:
         Y: 0
         Z: 0
       Topic: /move_base_node/TrajectoryPlannerROS/global_plan
+      Value: true
+    - Arrow Length: 3
+      Class: rviz/PoseArray
+      Color: 255; 255; 0
+      Enabled: true
+      Name: PoseArray
+      Topic: /boost_areas
       Value: true
   Enabled: true
   Global Options:
