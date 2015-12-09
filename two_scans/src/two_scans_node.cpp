@@ -29,7 +29,7 @@ class My_Scan {
         ros::Subscriber front_scan_sub_;
         ros::Subscriber back_scan_sub_;
         
-        bool back_init_done;
+        bool new_back_scan;
         
         /**
          * Parameters of the scanners
@@ -54,7 +54,7 @@ class My_Scan {
 };
 
 My_Scan::My_Scan(){
-	back_init_done = false;
+	new_back_scan = false;
 	
     front_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan", 1000, &My_Scan::frontScanCallback, this);
     back_scan_sub_ = node_.subscribe<sensor_msgs::LaserScan> ("/scan_back", 1000, &My_Scan::backScanCallback, this);
@@ -89,17 +89,19 @@ void My_Scan::backScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan){
      	projector_back_.transformLaserScanToPointCloud("/laser", *scan, back_scan_cloud, tfListener_back_);
     } catch (int err) {}
     
-	back_init_done = true;
+	new_back_scan = true;
 }
 
 void My_Scan::sendScan(){
-    // combine clouds
-    sensor_msgs::PointCloud2 combined_scan;
-    pcl::concatenatePointCloud(front_scan_cloud, back_scan_cloud, combined_scan);
-    
-    if (back_init_done) {
+    if (new_back_scan) {
+		// combine clouds
+		sensor_msgs::PointCloud2 combined_scan;
+		pcl::concatenatePointCloud(front_scan_cloud, back_scan_cloud, combined_scan);
 		point_cloud_publisher_.publish(combined_scan);
-    }
+		new_back_scan = false;
+    } else {
+		point_cloud_publisher_.publish(front_scan_cloud);
+	}
 }
 
 int main(int argc, char** argv)
