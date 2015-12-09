@@ -24,10 +24,10 @@ control::control()
 
     wii_communication_sub = nh_.subscribe<std_msgs::Int16MultiArray>("wii_communication",1000,&control::wiiCommunicationCallback,this);
     
-    R1 = Rect(Point(25.1, 8.65), Point(21.3, 17.1));
-    R2 = Rect(Point(20.3, 17.5), Point(12.5, 20.4));
-    R3 = Rect(Point(10.3, 18.3), Point(11.2, 9.46));
-    R4 = Rect(Point(12.5, 3.71), Point(20.3, 9.15));
+    R1 = Rect(Point(24.4, 8.6), Point(22  , 17  ));
+    R2 = Rect(Point(20  ,  18), Point(13.8, 20.6));
+    R3 = Rect( Point(9.5 ,  18), Point(12  , 9.5 ));
+    R4 = Rect( Point(12.5,   5), Point(20.5, 7.5 ));
     
     rect_msg = rectsToPoseArray(R1, R2, R3, R4);
  
@@ -41,15 +41,16 @@ void control::cmdCallback(const geometry_msgs::Twist::ConstPtr& msg)
 	if (control_Mode.data == 0 || BOOST_MODE_OFF){
 	   /* In manual mode, speed boost should be off */ 
 	   tas_cmd_msg = *msg;
-	} else {
+	   ROS_INFO("[Boost] Disabled by definition or C-Button not pressed");
 	   /* Autonomous mode: Activate boost functionality */
 	   if (msg != 0){
 	      if(isInBoostArea){
                  tas_cmd_msg = *msg;
 		 tas_cmd_msg.linear.x *= speedGainFactor;
-		 // ROS_INFO("Boost active!");
+		 ROS_INFO("[Boost] Is in area. Factor: %f", speedGainFactor);
               } else if (!isInBoostArea){
                  tas_cmd_msg = *msg;
+		 ROS_INFO("[Boost] Is NOT in area");
 		}
 	    }
 	}

@@ -1,4 +1,3 @@
-
 /*
  * Created by:  Fynn Terhar
  * Modified by: -
@@ -7,7 +6,7 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <math.h>
+#include <cmath>
 #include <stdlib.h>
 #include <ros/ros.h>
 
