@@ -19,12 +19,12 @@ int main(int argc, char **argv)
     geometry_msgs::PoseWithCovarianceStamped msg;
 
     msg.header.frame_id = "map";	//use map as reference
-    msg.pose.pose.position.x = 23.7591247559;		//x-position of initialpose
-    msg.pose.pose.position.y = 18.7595691681;		//y-position of initialpose
+    msg.pose.pose.position.x = 11.388551712;		//x-position of initialpose
+    msg.pose.pose.position.y = 19.2560691833;		//y-position of initialpose
     msg.pose.pose.position.z = 0;		//z-position of initialpose
     msg.pose.covariance =  {0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942};	//covariance data of initialpose
-    msg.pose.pose.orientation.z = 0.999909982168;		//z-orientation of initialpose
-    msg.pose.pose.orientation.w = 0.0134174349682;		//rotation of initialpose
+    msg.pose.pose.orientation.z = -0.721992788162;		//z-orientation of initialpose
+    msg.pose.pose.orientation.w = 0.691900580895;		//rotation of initialpose
 
     if (count == 0)	//send only once
     {
