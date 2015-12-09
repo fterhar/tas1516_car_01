@@ -96,63 +96,64 @@ int main(int argc, char** argv) {
     while(nh.ok())
     {
         ros::spinOnce(); // check for incoming messages
-	if (cnt == 1000)
-	{        
-		current_time = ros::Time::now();
+        if (cnt == 70)
+        {
+            ROS_INFO("Start der Berechnung!");
+            current_time = ros::Time::now();
 
-		double dt = (current_time - last_time).toSec();
+            double dt = (current_time - last_time).toSec();
 
-		ROS_INFO("Timedelta %lf", dt);
+            ROS_INFO("Timedelta %lf", dt);
 
-		th_ = tf::getYaw(hector_quaternion);
+            th_ = tf::getYaw(hector_quaternion);
 
-		ROS_INFO("hector yaw (Kursabweichung) = %f", th_);
+            ROS_INFO("hector yaw (Kursabweichung) = %f", th_);
 
-		x_dot = (x_ - pre_x)/dt;
-		y_dot = (y_ - pre_y)/dt;
-		th_dot = (th_ - pre_th)/dt;
+            x_dot = (x_ - pre_x)/dt;
+            y_dot = (y_ - pre_y)/dt;
+            th_dot = (th_ - pre_th)/dt;
 
-		ROS_INFO("Lin. Geschw. in x-Richtung: (Pos neu %lf - Pos alt %lf) / Zeitdelta %lf =  Geschw. %lf", x_, pre_x, dt, x_dot );
-		ROS_INFO("Lin. Geschw. in y-Richtung: (Pos neu %lf - Pos alt %lf) / Zeitdelta %lf =  Geschw. %lf", y_, pre_y, dt, y_dot );
-		ROS_INFO("Winkelgeschw.:              (Kursabweichung neu %lf - Kursabweichung alt %lf) / Zeitdelta %lf =  Winkelgeschw. %lf", x_, pre_x, dt, x_dot );
+            ROS_INFO("Lin. Geschw. in x-Richtung: (Pos neu %lf - Pos alt %lf) / Zeitdelta %lf =  Geschw. %lf", x_, pre_x, dt, x_dot );
+            ROS_INFO("Lin. Geschw. in y-Richtung: (Pos neu %lf - Pos alt %lf) / Zeitdelta %lf =  Geschw. %lf", y_, pre_y, dt, y_dot );
+            ROS_INFO("Winkelgeschw.:              (Kursabweichung neu %lf - Kursabweichung alt %lf) / Zeitdelta %lf =  Winkelgeschw. %lf", x_, pre_x, dt, x_dot );
 
 
-		// publish the transform over tf
-		odom_trans.header.stamp = current_time;
-		odom_trans.transform.translation.x = x_;
-		odom_trans.transform.translation.y = y_;
-		odom_trans.transform.translation.z = 0.0;
-		odom_trans.transform.rotation = tf::createQuaternionMsgFromYaw(th_);
-		odom_broadcaster.sendTransform(odom_trans);	// send transform
+            // publish the transform over tf
+            odom_trans.header.stamp = current_time;
+            odom_trans.transform.translation.x = x_;
+            odom_trans.transform.translation.y = y_;
+            odom_trans.transform.translation.z = 0.0;
+            odom_trans.transform.rotation = tf::createQuaternionMsgFromYaw(th_);
+            odom_broadcaster.sendTransform(odom_trans);	// send transform
 
-		// publish the wheel odometry message
-		wheel_odom.header.stamp = current_time;
-		wheel_odom.pose.pose.position.x = x_;
-		wheel_odom.pose.pose.position.y = y_;
-		wheel_odom.pose.pose.position.z = 0.0;
-		wheel_odom.pose.pose.orientation = tf::createQuaternionMsgFromYaw(th_);
-		wheel_odom.twist.twist.linear.x = x_dot;
-		wheel_odom.twist.twist.linear.y = y_dot;
-		wheel_odom.twist.twist.angular.z = th_dot;
-		wheel_odom_pub.publish(wheel_odom);	//publish message
+            // publish the wheel odometry message
+            wheel_odom.header.stamp = current_time;
+            wheel_odom.pose.pose.position.x = x_;
+            wheel_odom.pose.pose.position.y = y_;
+            wheel_odom.pose.pose.position.z = 0.0;
+            wheel_odom.pose.pose.orientation = tf::createQuaternionMsgFromYaw(th_);
+            wheel_odom.twist.twist.linear.x = x_dot;
+            wheel_odom.twist.twist.linear.y = y_dot;
+            wheel_odom.twist.twist.angular.z = th_dot;
+            wheel_odom_pub.publish(wheel_odom);	//publish message
 
-		/*geometry_msgs::Twist test;
-		tf::Transformer tef;
-		tef.lookupTwist("base_link", "visual_odom", ros::Time(0.5), ros::Duration(0.1), test);
-		visual_odom_pub.publish(test);
-		*/
-		// update time and sleep with loop rate
-		last_time = current_time;
-		pre_x = x_;
-		pre_y = y_;
-		pre_th = th_;
-		cnt = 0;
-	}
-	else
-	{
-		cnt++;
-	}
-        r.sleep();
-    }
+            /*geometry_msgs::Twist test;
+            tf::Transformer tef;
+            tef.lookupTwist("base_link", "visual_odom", ros::Time(0.5), ros::Duration(0.1), test);
+            visual_odom_pub.publish(test);
+            */
+            // update time and sleep with loop rate
+            last_time = current_time;
+            pre_x = x_;
+            pre_y = y_;
+            pre_th = th_;
+            cnt = 0;
+        }
+        else
+        {
+            cnt++;
+        }
+            r.sleep();
+        }
 }
 
