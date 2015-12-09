@@ -11,7 +11,7 @@
       <param name="angle_increment" value="0.00436332309619" />
       <param name="scan_time" value="0.0250000003725" />
       <param name="range_min" value="0.01" />
-      <param name="range_max" value="60.0" />
+      <param name="range_max" value="10.0" />
       <!--
       <param name="concurrency_level" value="a value" />
       <param name="use_inf" value="a value" />  -->

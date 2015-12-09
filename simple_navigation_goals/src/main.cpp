@@ -41,46 +41,34 @@ int main(int argc, char** argv){
     std::vector<geometry_msgs::Pose> waypoints; // vector of goals, with position and orientation
 
     geometry_msgs::Pose waypoint1;
-    waypoint1.position.x = 12.2;
-    waypoint1.position.y = 19.8;
-    waypoint1.position.z = 0.134;
+    waypoint1.position.x = 13.7;
+    waypoint1.position.y = 6.22;
+    waypoint1.position.z = 0.00197;
     waypoint1.orientation.x = 0;
     waypoint1.orientation.y = 0.000;
     waypoint1.orientation.z = 1;
-    waypoint1.orientation.w = 0.0;
+    waypoint1.orientation.w = 1.0;
     waypoints.push_back(waypoint1);
 
     geometry_msgs::Pose waypoint2;
-    waypoint2.position.x = 11.2;
-    waypoint2.position.y = 17.6;
-    waypoint2.position.z = 0.181;
+    waypoint2.position.x = 23.7;
+    waypoint2.position.y = 11.3;
+    waypoint2.position.z = 0.00195;
     waypoint2.orientation.x = 0;
     waypoint2.orientation.y = 0.000;
     waypoint2.orientation.z = 1;
-    waypoint2.orientation.w = -0.3;
+    waypoint2.orientation.w = 0.73;
     waypoints.push_back(waypoint2);
 
     geometry_msgs::Pose waypoint3;
-    waypoint3.position.x = 10.3;
-    waypoint3.position.y = 7.85;
-    waypoint3.position.z = 0.00399;
+    waypoint3.position.x = 11.1;
+    waypoint3.position.y = 19.6;
+    waypoint3.position.z = 0.00311;
     waypoint3.orientation.x = 0;
     waypoint3.orientation.y = 0.000;
     waypoint3.orientation.z = 1;
-    waypoint3.orientation.w = -0.7;
+    waypoint3.orientation.w = 0.01;
     waypoints.push_back(waypoint3);
-
-    geometry_msgs::Pose waypoint4;
-    waypoint4.position.x = 11.5;
-    waypoint4.position.y = 6.75;
-    waypoint4.position.z = 0.0398;
-    waypoint4.orientation.x = 0;
-    waypoint4.orientation.y = 0.000;
-    waypoint4.orientation.z = 1;
-    waypoint4.orientation.w = -1;
-    waypoints.push_back(waypoint4);
-
-
 
 
     MoveBaseClient ac("move_base", true); // action client to spin a thread by default
