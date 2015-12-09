@@ -4,7 +4,8 @@ control::control()
 {
     control_servo_pub_ = nh_.advertise<geometry_msgs::Vector3>("servo", 1);
 
-    cmd_sub_ = nh_.subscribe<geometry_msgs::Twist>("cmd_vel", 1000, &control::cmdCallback,this);
+    //cmd_sub_ = nh_.subscribe<geometry_msgs::Twist>("cmd_vel", 1000, &control::cmdCallback,this); /* Original */
+    cmd_sub_ = nh_.subscribe<geometry_msgs::Twist>("tas_cmd_vel", 1000, &control::cmdCallback,this);   /* Changed by Fynn */
 
     odom_sub_ = nh_.subscribe<geometry_msgs::Twist>("odom_vel",1000,&control::odomCallback,this);
 
