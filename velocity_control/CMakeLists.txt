@@ -186,3 +186,7 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_executable(control_vel src/control_vel.cpp)
+target_link_libraries(control_vel ${catkin_LIBRARIES})
+add_dependencies(current_vel_pub velocity_control_generate_messages_cpp)
