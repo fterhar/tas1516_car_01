@@ -23,7 +23,7 @@ int main(int argc, char **argv)
   while(ros::ok())  
   {
       speed_gain_controller.\
-	tas_cmd_pub.publish(speed_gain_controller.tas_cmd_msg);
+	speed_gain_pub.publish(speed_gain_controller.speed_gain_msg);
 
       speed_gain_controller.\
 	rect_pub.publish(speed_gain_controller.rect_msg);

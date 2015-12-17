@@ -7,12 +7,12 @@
 
 control::control()
 {
-   
     rect_pub = \
-	nh_.advertise<geometry_msgs::PoseArray>("boost_areas", 100, false);
+	nh_.advertise<geometry_msgs::PoseArray>\
+		("boost_areas", 100, false);
 
-    tas_cmd_pub = \
-	nh_.advertise<geometry_msgs::Twist>("tas_cmd_vel", 1);
+    speed_gain_pub = \
+	nh_.advertise<std_msgs::Float32>("speed_gain_msg", 1);
 
     cmd_sub = \
 	nh_.subscribe<geometry_msgs::Twist>\
@@ -22,34 +22,39 @@ control::control()
 	nh_.subscribe<geometry_msgs::PoseStamped>\
 	("slam_out_pose", 1000, &control::poseCallback,this);
 
-    wii_communication_sub = nh_.subscribe<std_msgs::Int16MultiArray>("wii_communication",1000,&control::wiiCommunicationCallback,this);
+    wii_communication_sub = nh_.subscribe<std_msgs::Int16MultiArray>\
+	("wii_communication",1000,&control::wiiCommunicationCallback,\
+	 this);
     
-    R1 = Rect(Point(24.4, 8.6), Point(22  , 17  ));
-    R2 = Rect(Point(20  ,  18), Point(13.8, 20.6));
+    R1 = Rect( Point(24.4, 8.6), Point(22  , 17  ));
+    R2 = Rect( Point(20  ,  18), Point(13.8, 20.6));
     R3 = Rect( Point(9.5 ,  18), Point(12  , 9.5 ));
     R4 = Rect( Point(12.5,   5), Point(20.5, 7.5 ));
     
     rect_msg = rectsToPoseArray(R1, R2, R3, R4);
+    speed_gain_msg.data = 1.0; /* Initially no speed gain */    
  
     isInBoostArea = false;
-    speedGainFactor = 2;
+    speedGainFactor = 1.5;
 }
 
-//Subscribe to the local planner and map the steering angle (and the velocity-but we dont do that here-) to pulse width modulation values.
+// Subscribe to the local planner and map the steering angle 
+// (and the velocity-but we dont do that here-) 
+// to pulse width modulation values.
 void control::cmdCallback(const geometry_msgs::Twist::ConstPtr& msg)
 {
 	if (control_Mode.data == 0 || BOOST_MODE_OFF){
 	   /* In manual mode, speed boost should be off */ 
-	   tas_cmd_msg = *msg;
-	   ROS_INFO("[Boost] Disabled by definition or C-Button not pressed");
+	   speed_gain_msg.data = 1.0;
+	   ROS_INFO("[Boost] Disabled by definition or C-Button");
+	} else {
 	   /* Autonomous mode: Activate boost functionality */
 	   if (msg != 0){
 	      if(isInBoostArea){
-                 tas_cmd_msg = *msg;
-		 tas_cmd_msg.linear.x *= speedGainFactor;
-		 ROS_INFO("[Boost] Is in area. Factor: %f", speedGainFactor);
+		 speed_gain_msg.data = speedGainFactor;
+		 ROS_INFO("[Boost] Inside:Factor:%f", speedGainFactor);
               } else if (!isInBoostArea){
-                 tas_cmd_msg = *msg;
+                 speed_gain_msg.data = 1.0;
 		 ROS_INFO("[Boost] Is NOT in area");
 		}
 	    }
