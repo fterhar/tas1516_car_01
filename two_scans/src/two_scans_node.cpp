@@ -75,7 +75,8 @@ void My_Scan::frontScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan){
      	projector_front_.transformLaserScanToPointCloud("/laser", *scan, front_scan_cloud, tfListener_front_);
     } catch (int err) {}
     
-    sendScan();
+    // sendScan();
+    point_cloud_publisher_.publish(front_scan_cloud);
 }
 
 void My_Scan::backScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan){
@@ -89,7 +90,8 @@ void My_Scan::backScanCallback(const sensor_msgs::LaserScan::ConstPtr& scan){
      	projector_back_.transformLaserScanToPointCloud("/laser", *scan, back_scan_cloud, tfListener_back_);
     } catch (int err) {}
     
-	new_back_scan = true;
+	// new_back_scan = true;
+	point_cloud_publisher_.publish(back_scan_cloud);
 }
 
 void My_Scan::sendScan(){
