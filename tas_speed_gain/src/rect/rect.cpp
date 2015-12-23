@@ -45,10 +45,10 @@ boost::array<geometry_msgs::Pose, 6> Rect::asPoses(){
 	return (this->generatePosesNeg(this->p1, this->p2)); 
    } else if ( (this->p1.x >  this->p2.x) && (this->p1.y <= this->p2.y) ){
 	//Fall 4
-	return (this->generatePosesPos(this->p2, this->p1)); 
+	return (this->generatePosesPos(this->p1, this->p2)); 
    } else if ( (this->p1.x <= this->p2.x) && (this->p1.y >  this->p2.y) ){
 	//Fall 1
-	return (this->generatePosesPos(this->p1, this->p2)); 
+	return (this->generatePosesPos(this->p2, this->p1)); 
    } else if ( (this->p1.x <= this->p2.x) && (this->p1.y <= this->p2.y) ){
 	// Fall 3
 	return (this->generatePosesNeg(this->p2, this->p1)); 
@@ -60,9 +60,10 @@ boost::array<geometry_msgs::Pose, 6> Rect::asPoses(){
 
 boost::array<geometry_msgs::Pose, 6> Rect::generatePosesNeg(Point pa, Point pb){
 //2_3
-  // geometry_msgs::Pose poses[6];
-  ROS_INFO("Call: generatePosesNeg"); 
+   ROS_INFO("Call: generatePosesNeg"); 
    boost::array<geometry_msgs::Pose, 6> poses;
+
+   /* Init positions to point a and point b */
    for(unsigned i = 0; i < 3; i++){
 	poses[i].position.x = pa.x;  
 	poses[i].position.y = pa.y;  
@@ -73,18 +74,30 @@ boost::array<geometry_msgs::Pose, 6> Rect::generatePosesNeg(Point pa, Point pb){
 	poses[i].position.y = pb.y;  
 	poses[i].position.z = 0; 
    }
+
+/**** Calculate angles for poses ****/
+
+   /* Angle of middle arrow of pa */
    poses[0].orientation = \
-	tf::createQuaternionMsgFromYaw(3 * M_PI/2 - \
-				       Point::getAngle(pa, pb)); 
+	tf::createQuaternionMsgFromYaw(M_PI + \
+				       Point::getAngle(pa, pb));
+   /* Angle of x-axis of pa */
    poses[1].orientation =  \
 	tf::createQuaternionMsgFromYaw(3 * M_PI/2);
+  
+   /* Angle of y-axis of pa */
    poses[2].orientation = \
 	tf::createQuaternionMsgFromYaw(M_PI);
+
+   /* Middle angle of pb */
    poses[3].orientation = \
-	tf::createQuaternionMsgFromYaw( (3 * M_PI/2 - \
-				Point::getAngle(pa, pb)) - M_PI);
+	tf::createQuaternionMsgFromYaw((Point::getAngle(pa, pb))) ;
+
+   /* y-axis of pb */
    poses[4].orientation =  \
 	tf::createQuaternionMsgFromYaw(0);
+
+   /* x-axis of pb */
    poses[5].orientation =  \
 	tf::createQuaternionMsgFromYaw(M_PI/2);
  
@@ -99,7 +112,6 @@ boost::array<geometry_msgs::Pose, 6> Rect::generatePosesPos(Point pa, Point pb){
 
    ROS_INFO("Call: generatePosesPos"); 
    boost::array<geometry_msgs::Pose, 6> poses;
-// geometry_msgs::Pose poses[6];
    
    for(unsigned i = 0; i < 3; i++){
 	poses[i].position.x = pa.x;  
@@ -111,15 +123,20 @@ boost::array<geometry_msgs::Pose, 6> Rect::generatePosesPos(Point pa, Point pb){
 	poses[i].position.y = pb.y;  
 	poses[i].position.z = 0; 
    }
+
+/**** Calculate angles for poses ****/
+
+   /* Angle of middle arrow of pa */
    poses[0].orientation =\
-	tf::createQuaternionMsgFromYaw(M_PI/2 + Point::getAngle(pa, pb)); 
+	tf::createQuaternionMsgFromYaw(M_PI - \
+					 Point::getAngle(pa, pb)); 
    poses[1].orientation =\
 	tf::createQuaternionMsgFromYaw(M_PI/2);
    poses[2].orientation = \
 	tf::createQuaternionMsgFromYaw(M_PI);
    poses[3].orientation = \
-	tf::createQuaternionMsgFromYaw(M_PI/2 + Point::getAngle(pa, pb)\
-				            + M_PI);
+	tf::createQuaternionMsgFromYaw(M_PI - \
+			 Point::getAngle(pa, pb) + M_PI);
    poses[4].orientation = \
 	tf::createQuaternionMsgFromYaw(0);
    poses[5].orientation = \

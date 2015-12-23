@@ -9,6 +9,7 @@
 
 #include "ros/ros.h"
 #include "std_msgs/Int16.h"
+#include "std_msgs/Float32.h"
 #include "std_msgs/Int16MultiArray.h"
 #include <math.h>
 #include <geometry_msgs/PoseArray.h>
@@ -31,7 +32,7 @@ public:
 
     ros::NodeHandle nh_;
     ros::Publisher  cmd_pub;
-    ros::Publisher  tas_cmd_pub;
+    ros::Publisher  speed_gain_pub;
     ros::Publisher  rect_pub;
     ros::Subscriber cmd_sub;
     ros::Subscriber pose_sub; /* To check if inside boost areas */
@@ -43,20 +44,15 @@ public:
     float speedGainFactor;
  
     /* Here are the Rectangles that define speed boost areas */ 
-    Rect R1;// (Point(25.1, 8.65), Point(21.3, 17.1));
-    Rect R2;// (Point(20.3, 17.5), Point(12.5, 20.4));
-    Rect R3;// (Point(10.3, 18.3), Point(11.2, 9.46));
-    Rect R4;// (Point(12.5, 3.71), Point(20.3, 9.15));
+    Rect R1;
+    Rect R2;
+    Rect R3;
+    Rect R4;
 
     std_msgs::Int16 control_Mode; /* manual or autonomous */
+    std_msgs::Float32 speed_gain_msg;
     geometry_msgs::Twist cmd_msg;
-    geometry_msgs::Twist tas_cmd_msg;
     geometry_msgs::PoseArray rect_msg;
-   // geometry_msgs::PoseStamped pose_msg;
-
-   // double cmd_linearVelocity;
-   // double cmd_angularVelocity;
-   // double cmd_steeringAngle;
 
 private:
     /* subscribe the cmd message from move_base */
