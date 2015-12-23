@@ -35,7 +35,7 @@ double pre_th = 0.0; // previous orientation
  */
 
 void hectorPoseCallback(const geometry_msgs::PoseStampedConstPtr& hector_msg) {
-    ROS_INFO("New estimated position received!");
+    //ROS_INFO("New estimated position received!");
     x_ = hector_msg->pose.position.x; // hector x position
     y_ = hector_msg->pose.position.y; // hector y position
 
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     ros::Subscriber hector_pose_subscriber = nh.subscribe("slam_out_pose", 1, hectorPoseCallback); // buffer only 1 slam_out_pose message
     ROS_INFO("Subscribed to slam_out_pose!");
     ros::Publisher wheel_odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 50); // buffer last 50 odom frames
-    ROS_INFO("Added publisher to odom!");
+    ROS_INFO("Added publisher to my_odom!");
     //ros::Publisher visual_odom_pub = nh.advertise<nav_msgs::Odometry>("visual_odom", 50); // buffer last 50 odom frames
 
     tf::TransformBroadcaster odom_broadcaster;
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
     ros::NodeHandle private_nh("~");
     private_nh.getParam("rate", rate); // frequency
 
-    ros::Rate r(rate); // set up ROS loop rate
+    ros::Rate r(10*rate); // set up ROS loop rate
 
     // initialize time variables
     ros::Time current_time, last_time;
@@ -96,7 +96,14 @@ int main(int argc, char** argv) {
     while(nh.ok())
     {
         ros::spinOnce(); // check for incoming messages
-        if (cnt == 70)
+	/*//publish the transform over tf
+            odom_trans.header.stamp = current_time;
+            odom_trans.transform.translation.x = x_;
+            odom_trans.transform.translation.y = y_;
+            odom_trans.transform.translation.z = 0.0;
+            odom_trans.transform.rotation = tf::createQuaternionMsgFromYaw(th_);
+            odom_broadcaster.sendTransform(odom_trans);*/
+        if (cnt == 700)	//52
         {
             ROS_INFO("Start der Berechnung!");
             current_time = ros::Time::now();
@@ -117,15 +124,6 @@ int main(int argc, char** argv) {
             ROS_INFO("Lin. Geschw. in y-Richtung: (Pos neu %lf - Pos alt %lf) / Zeitdelta %lf =  Geschw. %lf", y_, pre_y, dt, y_dot );
             ROS_INFO("Winkelgeschw.:              (Kursabweichung neu %lf - Kursabweichung alt %lf) / Zeitdelta %lf =  Winkelgeschw. %lf", x_, pre_x, dt, x_dot );
 
-
-            // publish the transform over tf
-            odom_trans.header.stamp = current_time;
-            odom_trans.transform.translation.x = x_;
-            odom_trans.transform.translation.y = y_;
-            odom_trans.transform.translation.z = 0.0;
-            odom_trans.transform.rotation = tf::createQuaternionMsgFromYaw(th_);
-            odom_broadcaster.sendTransform(odom_trans);	// send transform
-
             // publish the wheel odometry message
             wheel_odom.header.stamp = current_time;
             wheel_odom.pose.pose.position.x = x_;
@@ -137,11 +135,6 @@ int main(int argc, char** argv) {
             wheel_odom.twist.twist.angular.z = th_dot;
             wheel_odom_pub.publish(wheel_odom);	//publish message
 
-            /*geometry_msgs::Twist test;
-            tf::Transformer tef;
-            tef.lookupTwist("base_link", "visual_odom", ros::Time(0.5), ros::Duration(0.1), test);
-            visual_odom_pub.publish(test);
-            */
             // update time and sleep with loop rate
             last_time = current_time;
             pre_x = x_;
@@ -153,7 +146,7 @@ int main(int argc, char** argv) {
         {
             cnt++;
         }
-            r.sleep();
-        }
+        r.sleep();
+    }
 }
 
