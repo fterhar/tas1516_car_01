@@ -15,7 +15,7 @@ int main(int argc, char** argv)
     wii_lib teleop_wii;
     
     ros::NodeHandle n;
-    ros::Subscriber interrupt_sub = n.subscribe<std_msgs::Bool>("/interrupt",100, stopCallback);	//subscribe to topic interrupt which indicates if servo is occupied
+    ros::Subscriber interrupt_sub = n.subscribe<std_msgs::Bool>("/interrupt",100, stopCallback);
 
     ros::Rate loop_rate(50);
 

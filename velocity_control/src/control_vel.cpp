@@ -1,3 +1,4 @@
+//AC
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "nav_msgs/Odometry.h"
@@ -5,10 +6,6 @@
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/Twist.h>
 #include "control/control.h"
-//#include <tf/tf.h>
-
-
-//using namespace tf;
  
 float real_linear_vel_x = 0;
 float real_linear_vel_y = 0;
@@ -20,21 +17,21 @@ float needed_angular_vel_z;
 
 static bool flg = false;
 
+//receive real velocity values based on fake odometry and set the flag to true
 void realCallback(const nav_msgs::Odometry::ConstPtr& odom)
 {
   real_linear_vel_x = odom->twist.twist.linear.x;
   real_linear_vel_y = odom->twist.twist.linear.y;
   real_angular_vel_z = odom->twist.twist.angular.z;
-  //ROS_INFO("Current velocity: [%lf,%lf,%lf]", real_linear_vel_x, real_linear_vel_y, real_angular_vel_z); //store x,y,z position values
   flg = true;
 }
 
+//receive the requested velocity values
 void neededCallback(const geometry_msgs::Twist::ConstPtr& twst)
 {
   needed_linear_vel_x = twst->linear.x;
   needed_linear_vel_y = twst->linear.y;
   needed_angular_vel_z = twst->angular.z;
-  //ROS_INFO("Needed velocity: [%lf,%lf,%lf]", needed_linear_vel_x, needed_linear_vel_y, needed_angular_vel_z);
 }
 
 int main(int argc, char **argv)
@@ -48,18 +45,12 @@ int main(int argc, char **argv)
 
   ros::Subscriber real_vel = n.subscribe("odom", 1000, realCallback);
   ros::Subscriber needed_vel = n.subscribe("cmd_vel", 1000, neededCallback);
-  //ros::Publisher ctrl_vel_pub = n.advertise<nav_msgs::Odometry>("tas_cmd_vel", 1000);
   
-  /*int rate; // frequency in Hz
-  ros::NodeHandle private_nh("~");
-  private_nh.getParam("rate", rate); // frequency
-*/
   ros::Rate r(1000);
-
-  
 
   while(n.ok())
   {
+     //make bang-bang-control based on the arrival of the real velocity value (then the flag will be true)
      ros::spinOnce();
      if(flg)
      {
@@ -67,6 +58,7 @@ int main(int argc, char **argv)
 	ROS_INFO("Needed velocity: [%lf,%lf,%lf]", needed_linear_vel_x, needed_linear_vel_y, needed_angular_vel_z);
 	ROS_INFO("Current velocity: [%lf,%lf,%lf]", real_linear_vel_x, real_linear_vel_y, real_angular_vel_z);
 
+	//when threshold value is reached increase/decrease (depending on reaching upper or lower threshold) the velocity by publishing 	//a appropriate servo value	
 	if(needed_linear_vel_x > 0.1 || needed_linear_vel_y > 0.1)
 	{
 		if(needed_linear_vel_x - real_linear_vel_x > 0.1 || needed_linear_vel_y - real_linear_vel_y > 0.1)
