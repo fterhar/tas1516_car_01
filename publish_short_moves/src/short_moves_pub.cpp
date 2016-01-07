@@ -8,36 +8,36 @@ int main(int argc, char **argv)
 
   control move_control;
 
-  ros::Rate loop_rate(1); //every second (1 Hz)
+  ros::Rate loop_rate(4); //every second (1 Hz)
 
   int count = 0;
   while (ros::ok())	//this returns false if e.g. CTRL-C is hit
   {
+    /*if (count == 0)	//first accelerate
+    {
+	move_control.control_servo.x = 1550;
+	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+    }
+*/
     if (count == 0)	//first accelerate
     {
 	move_control.control_servo.x = 1550;
 	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
-
-    if (count == 1)	//first accelerate
-    {
-	move_control.control_servo.x = 1550;
-	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
-    }
     
-    else if (count == 2)	//then break
+    else if (count == 1)	//then break
     {
 	move_control.control_servo.x = 1500;
 	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
 
-    else if (count == 3)	//after that move backwards...
+    else if (count == 2)	//after that move backwards...
     {
 	move_control.control_servo.x = 1300;
 	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
     
-    else if (count == 4)	//and break
+    else if (count == 3)	//and break
     {
 	move_control.control_servo.x = 1500;
 	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
