@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     
     else if (count == 4)	//and break
     {
-	//make wii_comunication know that it now can send to servo topic again	
+	//make wii_comunication know that it now can send to servo topic again by sending false	
 	move_control.control_servo.x = 1500;
 	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
 	msg.data = false;

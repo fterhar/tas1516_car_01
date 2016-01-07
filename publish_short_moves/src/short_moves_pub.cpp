@@ -27,8 +27,8 @@ int main(int argc, char **argv)
 	msg.data = true;	
 	short_moves_pub.publish(msg);
 	ROS_INFO("stop others");	
-	move_control.control_servo.x = 1550;
-	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+	//move_control.control_servo.x = 1550;
+	//move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
 
     if (count == 1)	//first accelerate
