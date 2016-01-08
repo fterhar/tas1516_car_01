@@ -12,58 +12,75 @@ int main(int argc, char **argv)
   
   ros::NodeHandle n;
 
-  ros::Publisher short_moves_pub = n.advertise<std_msgs::Bool>("/interrupt", 1);	//publisher to new topic interrupt
+  ros::Publisher short_moves_pub = n.advertise<std_msgs::Bool>("/interrupt", 100);	//publisher to new topic interrupt
 
-  ros::Rate loop_rate(1); //every second (1 Hz)
+  ros::Rate loop_rate(1000); //every second (1 kHz)
 
   std_msgs::Bool msg;
 
-  int count = 0;
+  unsigned int count = 0;
   while (ros::ok())	//this returns false if e.g. CTRL-C is hit
   {
-    if (count == 0)	//first accelerate
+    if (count == 500)	//first accelerate
     {
-	//publish to interrupt topic the value false, which then indicates to wii_comunication to stop it's publishing to servo (due to 	//collision reasons)	
-	msg.data = true;	
-	short_moves_pub.publish(msg);
-	ROS_INFO("stop others");	
-	//move_control.control_servo.x = 1550;
-	//move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+        msg.data = true;
+        ROS_INFO("stop wii");
+        short_moves_pub.publish(msg);   //publish to interrupt topic the value false, which then indicates to wii_comunication to stop it's publishing to servo (due to collision reasons)
+        move_control.control_servo.x = 1550;
+        move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
 
-    if (count == 1)	//first accelerate
+    else if (count == 600)
     {
-	move_control.control_servo.x = 1550;
-	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+        move_control.control_servo.x = 1500;
+        move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+    }
+
+    else if (count == 700)
+    {
+        move_control.control_servo.x = 1550;
+        move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+    }
+
+    else if (count == 1500)	//then break
+    {
+        move_control.control_servo.x = 1500;
+        move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+    }
+
+    else if (count == 2000)	//after that move backwards...
+    {
+        move_control.control_servo.x = 1300;
+        move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+    }
+
+    else if (count == 2100)
+    {
+        move_control.control_servo.x = 1500;
+        move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+    }
+
+    else if (count == 2200)
+    {
+        move_control.control_servo.x = 1300;
+        move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
     
-    else if (count == 2)	//then break
+    else if (count == 3000)	//and break
     {
-	move_control.control_servo.x = 1500;
-	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+        msg.data = false;
+        ROS_INFO("free wii");    //make wii_comunication know that it now can send to servo topic again by sending false
+        short_moves_pub.publish(msg);
+        move_control.control_servo.x = 1500;
+        move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
 
-    else if (count == 3)	//after that move backwards...
-    {
-	move_control.control_servo.x = 1300;
-	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
-    }
-    
-    else if (count == 4)	//and break
-    {
-	//make wii_comunication know that it now can send to servo topic again by sending false	
-	move_control.control_servo.x = 1500;
-	move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
-	msg.data = false;
-	short_moves_pub.publish(msg);
-	ROS_INFO("free others");
-    }
+    ros::spinOnce();	//provide callbacks
 
-    //ros::spinOnce();	//provide callbacks
-
-    if(count == 100)
+    //prevent an overflow
+    if(count == 10000)
     {
-	count = 10;
+        count = 8000;
     }
     count++;
 

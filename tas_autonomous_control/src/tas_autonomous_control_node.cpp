@@ -25,10 +25,12 @@ int main(int argc, char** argv)
                 ROS_INFO("Automatic Control!");
                 if(autonomous_control.cmd_linearVelocity>0)
                 {
+                    //autonomous_control.control_servo.x = 1500 + 400 * autonomous_control.cmd_linearVelocity;    //AC velocity adaption positive
                     autonomous_control.control_servo.x = 1550;
                 }
                 else if(autonomous_control.cmd_linearVelocity<0)
                 {
+                    //autonomous_control.control_servo.x = 1500 + 200 * autonomous_control.cmd_linearVelocity;    //AC velocity adaption negative
                     autonomous_control.control_servo.x = 1300;
                 }
                 else
@@ -36,7 +38,7 @@ int main(int argc, char** argv)
                     autonomous_control.control_servo.x = 1500;
                 }
 
-                autonomous_control.control_servo.y = autonomous_control.cmd_steeringAngle;
+                autonomous_control.control_servo.y = autonomous_control.cmd_steeringAngle + 80;
             }
 
             autonomous_control.control_servo_pub_.publish(autonomous_control.control_servo);
