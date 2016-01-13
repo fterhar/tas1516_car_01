@@ -35,8 +35,6 @@ int main(int argc, char **argv)
 
     }
 
-     
-    
     pub.publish(msg);	//broadcast message to anyone who is connected
 
     ros::spinOnce();	//provide callbacks

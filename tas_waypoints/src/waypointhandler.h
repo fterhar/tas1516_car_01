@@ -60,7 +60,7 @@ class Waypointhandler
 //		  const move_base_msgs::MoveBaseFeedbackConstPtr& fb); 
 
     private:
-	boost::thread workerThread(&Waypointhandler::runGoalThread, this);
+	//boost::thread workerThread(&Waypointhandler::runGoalThread, this);
         void runGoalThread();
 
         WiiBtnState oldBtnState;

@@ -46,33 +46,42 @@ void Waypointhandler::runGoalThread(){
     while (!ac.waitForServer(ros::Duration(5.0))) { // wait for the action server to come up
 	ROS_INFO("Waiting for the move_base action server to come up");
     }
+    ROS_INFO("Server ready!");
     move_base_msgs::MoveBaseGoal goal;
     goal.target_pose.header.frame_id = "map"; // set target pose frame of coordinates
+
+    ROS_INFO("C:%d, A:%d", btnState.C, btnState.A);
 
     while(ros::ok()){
 
 	switch(state){
  	    case Init:
-	        if(btnState.C == 0){
+	        if(Waypointhandler::btnState.C == false){
+		    //ROS_INFO("Next state: Record");
 		    state = Record;
 	        } else {
+		    //ROS_INFO("Next state: Replay");
 		    state = Replay;
 	        }
 	        break;
 
 	    case Record:
 	        // Record the waypoints here
-	        if( (btnState.A == true) && (oldBtnState.A == false) ){
+	        if( (Waypointhandler::btnState.A == true) && (Waypointhandler::oldBtnState.A == false) ){
 	            if( store_waypoint() ){
-		        ROS_INFO("... Waypoint successfully stored!");
+		        ROS_INFO("... Waypoint successfully stored!, number: %d", waypoints.size());
+			
 	            }
 	        }
-		if(btnState.C == true){
+		if(Waypointhandler::btnState.C == true){
+		    ROS_INFO("Next state: Replay");
 		    state = Replay;
 		} else {
+		    //ROS_INFO("Next state: Record");
 		    state = Record;
 		}
-	        oldBtnState = btnState;
+	        Waypointhandler::oldBtnState = Waypointhandler::btnState;
+		break;
 
 	    case Replay:
 		// Replay the recorded waypoints here
@@ -111,8 +120,10 @@ void Waypointhandler::runGoalThread(){
 Waypointhandler::Waypointhandler(){
  
     /* Init Buttonstates as false */    
-    btnState.A = false;
-    btnState.C = true;
+    Waypointhandler::btnState.A = false;
+    Waypointhandler::btnState.C = false;
+    Waypointhandler::oldBtnState.A = false;
+    Waypointhandler::oldBtnState.C = false;
 
     /* Init the goal_giver instance */
 //    rect_pub = \
@@ -185,9 +196,10 @@ bool Waypointhandler::store_waypoint(){
 }  
 
 void Waypointhandler::wiiStateCallback\
-		(const wiimote::State::ConstPtr& wiiState)
-    btnState.C = wiiState.get()->nunchuk_buttons[WII_BUTTON_NUNCHUK_C];
-    btnState.A = wiiState.get()->buttons[WII_BUTTON_A];
+		(const wiimote::State::ConstPtr& wiiState){
+    ROS_INFO("received new wiiState");
+    Waypointhandler::btnState.C = wiiState.get()->nunchuk_buttons[WII_BUTTON_NUNCHUK_C];
+    Waypointhandler::btnState.A = wiiState.get()->buttons[WII_BUTTON_A];
 	
 }
 

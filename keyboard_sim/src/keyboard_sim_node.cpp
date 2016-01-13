@@ -18,8 +18,10 @@ int main(int argc, char **argv)
   while (ros::ok())	//this returns false if e.g. CTRL-C is hit
   {
     wiimote::State msg;
+    ROS_INFO("Enter key");
     int pressed = getchar();
 
+    
     switch(pressed)
     {
 	case 'a':
