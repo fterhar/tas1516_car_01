@@ -133,7 +133,7 @@ Waypointhandler::Waypointhandler(){
     wii_communication_sub = nh_.subscribe<wiimote::State>\
 	("wiimote/state",100,&wii_lib::wiiStateCallback,this);
 
-    boost::thread workerThread(runGoalThread);
+    boost::thread workerThread(&Waypointhandler::runGoalThread, this);
  
 }
  /**
