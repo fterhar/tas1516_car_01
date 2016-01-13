@@ -53,9 +53,8 @@ Waypointhandler::Waypointhandler(){
 //	nh_.subscribe<geometry_msgs::PoseStamped>\
 //	("slam_out_pose", 1000, &control::poseCallback,this);
 //
-    wii_communication_sub = nh_.subscribe<std_msgs::Int16MultiArray>\
-	("wii_communication",1000,&Waypointhandler::wiiCommunicationCallback,\
-	 this);
+    wii_communication_sub = nh_.subscribe<wiimote::State>\
+	("wiimote/state",100,&wii_lib::wiiStateCallback,this);
  
 }
  /**
@@ -106,10 +105,10 @@ bool Waypointhandler::store_waypoint(){
     return tf_ok;
 }  
 
-void Waypointhandler::wiiCommunicationCallback(\
-		const std_msgs::Int16MultiArray::ConstPtr& msg){
-    btnState.C = msg->data[0];
-    btnState.A = msg->data[4];//TODO: CHECK INDEX!
+void Waypointhandler::wiiStateCallback\
+		(const wiimote::State::ConstPtr& wiiState)
+    btnState.C = wiiState.get()->nunchuk_buttons[WII_BUTTON_NUNCHUK_C];
+    btnState.A = wiiState.get()->buttons[WII_BUTTON_A];
 	
 }
 
@@ -135,7 +134,7 @@ void Waypointhandler::runGoalThread(){
     while(ros::ok()){
 
 	switch(state){
- 	    case Init:   
+ 	    case Init:
 	        if(btnState.C == 0){
 		    state = Record;
 	        } else {

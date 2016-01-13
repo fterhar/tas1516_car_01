@@ -6,9 +6,13 @@
 #ifndef WAYPOINTHANDLER_H
 #define WAYPOINTHANDLER_H
 
+#define WII_BUTTON_A            4
+#define WII_BUTTON_NUNCHUK_C    1
+
 #include "std_msgs/Int16.h"
 #include "std_msgs/Float32.h"
-#include "std_msgs/Int16MultiArray.h"
+#include "std_msgs/Int16MultiArray.h"//TODO: Löschen?
+#include <wiimote/State.h>
 #include <math.h>
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/Pose.h>
@@ -40,7 +44,7 @@ class Waypointhandler
         WiiBtnState getWiiButtonState();
         bool store_waypoint();
         ros::NodeHandle nh_;
-        ros::Publisher  rect_pub;
+
         ros::Subscriber wii_communication_sub; 
    
         tf::TransformListener listener;
@@ -61,10 +65,7 @@ class Waypointhandler
         WiiBtnState oldBtnState;
         WiiBtnState btnState;
 
-
-        void wiiCommunicationCallback(\
-		  const std_msgs::Int16MultiArray::ConstPtr& msg);
-
+    	void wiiStateCallback(const wiimote::State::ConstPtr& wiiState);
 };
 
 #endif
