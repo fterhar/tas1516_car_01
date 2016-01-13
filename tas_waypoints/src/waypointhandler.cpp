@@ -31,88 +31,6 @@ void activeCb() {
 void feedbackCb(const move_base_msgs::MoveBaseFeedbackConstPtr& feedback) {
     ROS_INFO("[X]:%f [Y]:%f [W]: %f [Z]: %f", feedback->base_position.pose.position.x,feedback->base_position.pose.position.y,feedback->base_position.pose.orientation.w, feedback->base_position.pose.orientation.z);
 }
-Waypointhandler::Waypointhandler(){
- 
-    /* Init Buttonstates as false */    
-    btnState.A = false;
-    btnState.C = true;
-
-    /* Init the goal_giver instance */
-//    rect_pub = \
-//	nh_.advertise<geometry_msgs::PoseArray>\
-//		("boost_areas", 100, false);
-//
-//    speed_gain_pub = \
-//	nh_.advertise<std_msgs::Float32>("speed_gain_msg", 1);
-//
-//    cmd_sub = \
-//	nh_.subscribe<geometry_msgs::Twist>\
-//	("cmd_vel", 1000, &control::cmdCallback,this);
-//
-//    pose_sub = \
-//	nh_.subscribe<geometry_msgs::PoseStamped>\
-//	("slam_out_pose", 1000, &control::poseCallback,this);
-//
-    wii_communication_sub = nh_.subscribe<wiimote::State>\
-	("wiimote/state",100,&wii_lib::wiiStateCallback,this);
- 
-}
- /**
- * Record the current position as a waypoint and store the waypoint
- * in the respective array
- */
-bool Waypointhandler::store_waypoint(){
-    ROS_INFO("Recording a waypoint...");
-
-    /* Transform the received pose to the map frame: */
-    std::string map_frame("/map");
-    std::string base_frame("/base_link");
-
-    bool tf_ok = true;
-    try {
-        Waypointhandler::listener.lookupTransform\
-			(map_frame, base_frame, ros::Time(0), \
-		 	 Waypointhandler::transform);
-    } catch(tf::TransformException ex) {
-	tf_ok = false;
-        ROS_WARN(" %s", ex.what());
-    }
-
-    if(tf_ok) {
-
-	int px = transform.getOrigin().getX();
-	int py = transform.getOrigin().getY();
-	int pz = transform.getOrigin().getZ();
-	int rx = transform.getRotation().getAxis().x();
-	int ry = transform.getRotation().getAxis().y();
-	int rz = transform.getRotation().getAxis().z();
-	int rw = transform.getRotation().getAxis().w();
-
-	geometry_msgs::Pose waypoint;
-	waypoint.position.x    = px;
-	waypoint.position.y    = py;
-	waypoint.position.z    = pz;
-	waypoint.orientation.x = rx;
-	waypoint.orientation.y = ry;
-	waypoint.orientation.z = rz;
-	waypoint.orientation.w = rw;
-
-	Waypointhandler::waypoints.push_back( waypoint );
-    } else {
-	ROS_WARN("Position of Robot was not received properly!");
-    }
-    
-    return tf_ok;
-}  
-
-void Waypointhandler::wiiStateCallback\
-		(const wiimote::State::ConstPtr& wiiState)
-    btnState.C = wiiState.get()->nunchuk_buttons[WII_BUTTON_NUNCHUK_C];
-    btnState.A = wiiState.get()->buttons[WII_BUTTON_A];
-	
-}
-
-
 
 /**
  * This runs as a thread and collects all data and also replays them 
@@ -190,3 +108,87 @@ void Waypointhandler::runGoalThread(){
             }//end of case 
     }//end of while(ros::ok)        
 }
+Waypointhandler::Waypointhandler(){
+ 
+    /* Init Buttonstates as false */    
+    btnState.A = false;
+    btnState.C = true;
+
+    /* Init the goal_giver instance */
+//    rect_pub = \
+//	nh_.advertise<geometry_msgs::PoseArray>\
+//		("boost_areas", 100, false);
+//
+//    speed_gain_pub = \
+//	nh_.advertise<std_msgs::Float32>("speed_gain_msg", 1);
+//
+//    cmd_sub = \
+//	nh_.subscribe<geometry_msgs::Twist>\
+//	("cmd_vel", 1000, &control::cmdCallback,this);
+//
+//    pose_sub = \
+//	nh_.subscribe<geometry_msgs::PoseStamped>\
+//	("slam_out_pose", 1000, &control::poseCallback,this);
+//
+    wii_communication_sub = nh_.subscribe<wiimote::State>\
+	("wiimote/state",100,&wii_lib::wiiStateCallback,this);
+
+    boost::thread workerThread(runGoalThread);
+ 
+}
+ /**
+ * Record the current position as a waypoint and store the waypoint
+ * in the respective array
+ */
+bool Waypointhandler::store_waypoint(){
+    ROS_INFO("Recording a waypoint...");
+
+    /* Transform the received pose to the map frame: */
+    std::string map_frame("/map");
+    std::string base_frame("/base_link");
+
+    bool tf_ok = true;
+    try {
+        Waypointhandler::listener.lookupTransform\
+			(map_frame, base_frame, ros::Time(0), \
+		 	 Waypointhandler::transform);
+    } catch(tf::TransformException ex) {
+	tf_ok = false;
+        ROS_WARN(" %s", ex.what());
+    }
+
+    if(tf_ok) {
+
+	int px = transform.getOrigin().getX();
+	int py = transform.getOrigin().getY();
+	int pz = transform.getOrigin().getZ();
+	int rx = transform.getRotation().getAxis().x();
+	int ry = transform.getRotation().getAxis().y();
+	int rz = transform.getRotation().getAxis().z();
+	int rw = transform.getRotation().getAxis().w();
+
+	geometry_msgs::Pose waypoint;
+	waypoint.position.x    = px;
+	waypoint.position.y    = py;
+	waypoint.position.z    = pz;
+	waypoint.orientation.x = rx;
+	waypoint.orientation.y = ry;
+	waypoint.orientation.z = rz;
+	waypoint.orientation.w = rw;
+
+	Waypointhandler::waypoints.push_back( waypoint );
+    } else {
+	ROS_WARN("Position of Robot was not received properly!");
+    }
+    
+    return tf_ok;
+}  
+
+void Waypointhandler::wiiStateCallback\
+		(const wiimote::State::ConstPtr& wiiState)
+    btnState.C = wiiState.get()->nunchuk_buttons[WII_BUTTON_NUNCHUK_C];
+    btnState.A = wiiState.get()->buttons[WII_BUTTON_A];
+	
+}
+
+
