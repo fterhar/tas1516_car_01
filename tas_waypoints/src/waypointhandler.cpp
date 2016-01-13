@@ -109,7 +109,7 @@ bool Waypointhandler::store_waypoint(){
 void Waypointhandler::wiiCommunicationCallback(\
 		const std_msgs::Int16MultiArray::ConstPtr& msg){
     btnState.C = msg->data[0];
-    btnState.A = msg->data[3];//TODO: CHECK INDEX!
+    btnState.A = msg->data[4];//TODO: CHECK INDEX!
 	
 }
 

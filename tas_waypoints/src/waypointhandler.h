@@ -48,7 +48,6 @@ class Waypointhandler
 
         //vector of goals, with position and orientation
         std::vector<geometry_msgs::Pose> waypoints;
-        std_msgs::Float32 speed_gain_msg;
 
 //	void doneCb(const actionlib::SimpleClientGoalState& scgs,\
 //		    const move_base_msgs::MoveBaseResultConstPtr& res); 
