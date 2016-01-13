@@ -1,6 +1,6 @@
 //AC
 #include "ros/ros.h"
-#include "std_msgs/Int16MultiArray.h"	//include message type
+#include "wiimote/State.h"	//include message type
 
 int main(int argc, char **argv)
 {
@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 
   ros::NodeHandle n;
 
-  ros::Publisher pub = n.advertise<std_msgs::Int16MultiArray>("/wii_communication", 1000, true);	
+  ros::Publisher pub = n.advertise<wiimote::State>("/wiimote/state", 1000, true);	
 
   ros::Rate loop_rate(100); //every 10 ms (100 Hz)
 
@@ -17,10 +17,24 @@ int main(int argc, char **argv)
 
   while (ros::ok())	//this returns false if e.g. CTRL-C is hit
   {
-    std_msgs::Int16MultiArray msg;
+    wiimote::State msg;
+    int pressed = getchar();
 
-    
-    
+    switch(pressed)
+    {
+	case 'a':
+	     msg.buttons[4] = true;
+	     break;
+	case 'c':
+	     msg.nunchuk_buttons[1] = true;
+	     break;
+	default:
+	     msg.buttons[4] = false;
+	     msg.nunchuk_buttons[1] = false;
+	     break;
+
+    }
+
     pub.publish(msg);	//broadcast message to anyone who is connected
 
     ros::spinOnce();	//provide callbacks
