@@ -28,6 +28,8 @@ int main(int argc, char **argv)
 	case 'c':
 	     msg.nunchuk_buttons[1] = true;
 	     break;
+	case '\n':
+	     break;
 	default:
 	     msg.buttons[4] = false;
 	     msg.nunchuk_buttons[1] = false;
