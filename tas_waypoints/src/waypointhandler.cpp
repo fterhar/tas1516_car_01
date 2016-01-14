@@ -69,8 +69,7 @@ void Waypointhandler::runGoalThread(){
 	        // Record the waypoints here
 	        if( (Waypointhandler::btnState.A == true) && (Waypointhandler::oldBtnState.A == false) ){
 	            if( store_waypoint() ){
-		      ROS_INFO("... Waypoint successfully stored!, number: %d", (int)waypoints.size());
-			
+		      ROS_INFO("... Waypoint successfully stored!, number: %d", (int)waypoints.size());			
 	            }
 	        }
 		if(Waypointhandler::btnState.C == true){
@@ -112,10 +111,17 @@ void Waypointhandler::runGoalThread(){
 		    /* Check if C-Button is no longer pressed and go back to record mode */
 		    if( btnState.C == false ){
 			state = Record;
+			ROS_INFO("From replay to record!");
 			break;
 		    }
+	      }//end of while
 
-	    	}//end of for	
+	      if( btnState.C == false ){
+	          state = Record;
+		  ROS_INFO("From replay to record!");
+	     	  break;
+	      }
+
             }//end of case 
     }//end of while(ros::ok)        
 }
