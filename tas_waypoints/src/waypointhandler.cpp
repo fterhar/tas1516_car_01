@@ -69,7 +69,7 @@ void Waypointhandler::runGoalThread(){
 	        // Record the waypoints here
 	        if( (Waypointhandler::btnState.A == true) && (Waypointhandler::oldBtnState.A == false) ){
 	            if( store_waypoint() ){
-		        ROS_INFO("... Waypoint successfully stored!, number: %d", waypoints.size());
+		      ROS_INFO("... Waypoint successfully stored!, number: %d", (int)waypoints.size());
 			
 	            }
 	        }
@@ -86,7 +86,7 @@ void Waypointhandler::runGoalThread(){
 	    case Replay:
 		// Replay the recorded waypoints here
 		/* loop over all goal points, point by point */
-	    	for(; i < waypoints.size(); ++i) { 
+	      while( i < waypoints.size() ) { 
 
                     goal.target_pose.header.stamp = ros::Time::now(); // set current time
 	            goal.target_pose.pose = waypoints.at(i);
@@ -100,6 +100,8 @@ void Waypointhandler::runGoalThread(){
 		    ); // send goal and register callback handler
 
 	            ac.waitForResult(); // wait for goal result
+
+		    i++; //increment index of waypoints
 
                     if( ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED ) {
 	            	ROS_INFO("The base moved to %d goal", i);
@@ -125,22 +127,6 @@ Waypointhandler::Waypointhandler(){
     Waypointhandler::oldBtnState.A = false;
     Waypointhandler::oldBtnState.C = false;
 
-    /* Init the goal_giver instance */
-//    rect_pub = \
-//	nh_.advertise<geometry_msgs::PoseArray>\
-//		("boost_areas", 100, false);
-//
-//    speed_gain_pub = \
-//	nh_.advertise<std_msgs::Float32>("speed_gain_msg", 1);
-//
-//    cmd_sub = \
-//	nh_.subscribe<geometry_msgs::Twist>\
-//	("cmd_vel", 1000, &control::cmdCallback,this);
-//
-//    pose_sub = \
-//	nh_.subscribe<geometry_msgs::PoseStamped>\
-//	("slam_out_pose", 1000, &control::poseCallback,this);
-//
     wii_communication_sub = nh_.subscribe<wiimote::State>\
 	("wiimote/state",100,&Waypointhandler::wiiStateCallback,this);
 
