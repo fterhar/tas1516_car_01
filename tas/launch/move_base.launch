@@ -7,8 +7,8 @@
   <!-- Run map server  -->
   <node name="map_server" pkg="map_server" type="map_server" args="$(find tas)/launch/config/map_server/LSR_3.yaml"/>
 
-   <!-- Run AMCL -->
-  <node pkg="amcl" type="amcl" name="amcl" respawn="true">
+   <!-- Run AMCL --><!-- Run AMCL -->
+ <node pkg="amcl" type="amcl" name="amcl" respawn="true">
 
 	  <!-- ROS framework parameters -->
 	  <param name="odom_frame_id" value="odom"/>
@@ -36,7 +36,7 @@
 	  <param name="kld_z" value="0.99"/>
 	  <param name="update_min_d" value="0.2"/>
 	  <param name="update_min_a" value="0.5"/>
-	  <param name="resample_interval" value="2"/>
+	  <param name="resample_interval" value="999999"/> <!-- 2 -->
 	  <param name="transform_tolerance" value="0.1"/>
 	  <param name="recovery_alpha_slow" value="0.0"/>
 	  <param name="recovery_alpha_fast" value="0.0"/>
@@ -67,6 +67,8 @@
 
 
   </node>
+
+ 
 
   <!-- Original Move Base-->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
