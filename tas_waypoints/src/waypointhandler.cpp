@@ -162,13 +162,13 @@ bool Waypointhandler::store_waypoint(){
 
     if(tf_ok) {
 
-	int px = transform.getOrigin().getX();
-	int py = transform.getOrigin().getY();
-	int pz = transform.getOrigin().getZ();
-	int rx = transform.getRotation().getAxis().x();
-	int ry = transform.getRotation().getAxis().y();
-	int rz = transform.getRotation().getAxis().z();
-	int rw = transform.getRotation().getAxis().w();
+	float px = transform.getOrigin().getX();
+	float py = transform.getOrigin().getY();
+	float pz = transform.getOrigin().getZ();
+	float rx = transform.getRotation().getAxis().x();
+	float ry = transform.getRotation().getAxis().y();
+	float rz = transform.getRotation().getAxis().z();
+	float rw = transform.getRotation().getAxis().w();
 
 	geometry_msgs::Pose waypoint;
 	waypoint.position.x    = px;
@@ -178,6 +178,7 @@ bool Waypointhandler::store_waypoint(){
 	waypoint.orientation.y = ry;
 	waypoint.orientation.z = rz;
 	waypoint.orientation.w = rw;
+
 
 	Waypointhandler::waypoints.push_back( waypoint );
     } else {
@@ -189,7 +190,7 @@ bool Waypointhandler::store_waypoint(){
 
 void Waypointhandler::wiiStateCallback\
 		(const wiimote::State::ConstPtr& wiiState){
-    ROS_INFO("received new wiiState");
+    //ROS_INFO("received new wiiState");
     Waypointhandler::btnState.C = wiiState.get()->nunchuk_buttons[WII_BUTTON_NUNCHUK_C];
     Waypointhandler::btnState.A = wiiState.get()->buttons[WII_BUTTON_A];
 	
