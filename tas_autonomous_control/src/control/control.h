@@ -3,6 +3,7 @@
 
 #include "ros/ros.h"
 #include "std_msgs/Int16.h"
+#include "std_msgs/Float32.h"
 #include "std_msgs/Int16MultiArray.h"
 #include <math.h>
 #include <geometry_msgs/Vector3.h>
@@ -20,11 +21,13 @@ public:
     ros::NodeHandle nh_;
     ros::Publisher control_servo_pub_;
     ros::Subscriber cmd_sub_;
+    ros::Subscriber speed_gain_sub_;
     ros::Subscriber odom_sub_;
     ros::Subscriber wii_communication_sub;
 
     std_msgs::Int16 control_Brake; /* flag for brake */
     std_msgs::Int16 control_Mode; /* flag for car mode: manual or autonomous */
+    float speed_gain_factor; /* by Fynn */
 
     double cmd_linearVelocity;
     double cmd_angularVelocity;
@@ -39,6 +42,9 @@ public:
 private:
     /* subscribe the cmd message from move_base */
     void cmdCallback(const geometry_msgs::Twist::ConstPtr& msg);
+
+    /* by Fynn: Subscribe the speed_gain_msg by speed_gain node */
+    void speedGainCallback(const std_msgs::Float32::ConstPtr& msg);
 
     /* subscribe the virtual odom message as a feedback for controller */
     void odomCallback(const geometry_msgs::Twist::ConstPtr& msg);

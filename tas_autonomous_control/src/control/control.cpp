@@ -4,11 +4,14 @@ control::control()
 {
     control_servo_pub_ = nh_.advertise<geometry_msgs::Vector3>("servo", 1);
 
-    cmd_sub_ = nh_.subscribe<geometry_msgs::Twist>("cmd_vel", 1000, &control::cmdCallback,this);
+    cmd_sub_ = nh_.subscribe<geometry_msgs::Twist>("cmd_vel", 1000, &control::cmdCallback,this); /* Original */
+    speed_gain_sub_ = nh_.subscribe<std_msgs::Float32>("speed_gain_msg", 1000, &control::speedGainCallback,this);   /* by Fynn */
 
     odom_sub_ = nh_.subscribe<geometry_msgs::Twist>("odom_vel",1000,&control::odomCallback,this);
 
     wii_communication_sub = nh_.subscribe<std_msgs::Int16MultiArray>("wii_communication",1000,&control::wiiCommunicationCallback,this);
+
+    speed_gain_factor = 1.0; /* by Fynn: Initially set to no gain */
 
 //    Fp = 10;// need to test! defult:125
 
@@ -63,6 +66,18 @@ void control::wiiCommunicationCallback(const std_msgs::Int16MultiArray::ConstPtr
 {
     control_Mode.data = msg->data[0];
     control_Brake.data = msg->data[1];
+}
+
+
+/* by Fynn: Receive the speed gain and save it to the class instance */
+void control::speedGainCallback\
+			(const std_msgs::Float32::ConstPtr& msg){
+    if (msg->data < 15 && msg->data >= 1){
+	speed_gain_factor = msg->data;
+    } else {
+	ROS_WARN("Invalid speed gain factor received! Set to 1!%f", msg->data);
+	speed_gain_factor = 1.0;
+    }
 }
 
 //geometry_msgs::Vector3 control::P_Controller()
