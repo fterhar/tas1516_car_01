@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_node">
       <!--
       SETUP with real parameters of the car required!!!-->
       <param name="angle_min" value="-3.1416" />

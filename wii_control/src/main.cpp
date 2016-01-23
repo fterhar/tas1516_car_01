@@ -1,9 +1,15 @@
+//AC
 #include "wii_lib/wii_lib.h"
+#include "std_msgs/Bool.h"
+
 
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "teleop_wii");
     wii_lib teleop_wii;
+    
+    ros::NodeHandle n;
+
 
     ros::Rate loop_rate(50);
 
@@ -13,7 +19,7 @@ int main(int argc, char** argv)
     {
 
         teleop_wii.wii_communication_pub.publish(teleop_wii.wii_state_);
-	//ROS_INFO("Debug message!");
+
         ros::spinOnce();
         loop_rate.sleep();
     }

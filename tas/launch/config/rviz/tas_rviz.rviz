@@ -14,6 +14,7 @@ Panels:
         - /Path2
         - /Path3
         - /PoseArray1
+        - /PoseArray2
       Splitter Ratio: 0.5
     Tree Height: 595
   - Class: rviz/Selection
@@ -34,7 +35,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: LaserScan
 Visualization Manager:
   Class: ""
   Displays:
@@ -98,13 +99,32 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        base_imu:
+          Value: true
+        base_link:
+          Value: true
+        laser:
+          Value: true
+        map:
+          Value: true
+        odom:
+          Value: true
+        scanmatcher_frame:
+          Value: true
       Marker Scale: 2
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        map:
+          odom:
+            scanmatcher_frame:
+              base_link:
+                base_imu:
+                  {}
+                laser:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -137,6 +157,13 @@ Visualization Manager:
       Enabled: true
       Name: PoseArray
       Topic: /particlecloud
+      Value: true
+    - Arrow Length: 3
+      Class: rviz/PoseArray
+      Color: 255; 255; 0
+      Enabled: true
+      Name: PoseArray
+      Topic: /boost_areas
       Value: true
   Enabled: true
   Global Options:
@@ -195,5 +222,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1375
-  X: 65
-  Y: 24
+  X: 55
+  Y: 14

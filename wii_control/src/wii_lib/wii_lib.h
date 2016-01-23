@@ -10,6 +10,7 @@
 #include <math.h>
 #include <std_msgs/Int16MultiArray.h>
 #include <std_msgs/Int16.h>
+#include <std_msgs/Bool.h>
 
 #define WII_BUTTON_1            0
 #define WII_BUTTON_2            1
@@ -41,6 +42,7 @@ public:
     ros::Publisher wii_servo_pub_;
     ros::Publisher wii_communication_pub;
     ros::Subscriber wii_sub_;
+    ros::Subscriber interrupt;		//subscribe to created topic interrupt (AC)
 
     /* flags for the control mode and brake */
     std_msgs::Int16 emergencyBrake;
@@ -48,6 +50,7 @@ public:
 
     /* scale factor for joystick*/
     double SCALE_FAKTOR_THROTTLE;
+    bool stop;
 
     geometry_msgs::Vector3 servo;
     std_msgs::Int16MultiArray wii_state_;
@@ -61,6 +64,7 @@ private:
     /* initialize the msg for the communication between wii_control and trajector_control*/
     void msg_Initialization(std_msgs::Int16MultiArray& msg);
 
+    void stopCallback(const std_msgs::Bool::ConstPtr& stp);	//created callback which sets stop flag for wii communication (AC)
 
 };
 
