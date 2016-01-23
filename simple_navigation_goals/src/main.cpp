@@ -41,7 +41,6 @@ int main(int argc, char** argv){
     std::vector<geometry_msgs::Pose> waypoints; // vector of goals, with position and orientation
 
     geometry_msgs::Pose waypoint1;
-<<<<<<< HEAD
       waypoint1.position.x =  23.8815116882;
       waypoint1.position.y =  18.857393264;
       waypoint1.position.z =  0.0;
