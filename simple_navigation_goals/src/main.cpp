@@ -41,6 +41,7 @@ int main(int argc, char** argv){
     std::vector<geometry_msgs::Pose> waypoints; // vector of goals, with position and orientation
 
     geometry_msgs::Pose waypoint1;
+<<<<<<< HEAD
       waypoint1.position.x =  23.8815116882;
       waypoint1.position.y =  18.857393264;
       waypoint1.position.z =  0.0;
@@ -219,7 +220,6 @@ int main(int argc, char** argv){
       waypoint18.orientation.z =  -0.66953927284;
       waypoint18.orientation.w =  0.74277665696;
     waypoints.push_back(waypoint18);
-
     MoveBaseClient ac("move_base", true); // action client to spin a thread by default
 
     while (!ac.waitForServer(ros::Duration(5.0))) { // wait for the action server to come up
