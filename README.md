@@ -1,6 +1,6 @@
 Documentation
 =======
-[Documentation second task](task2/README.md)
+[Documentation second task: Slalom](task2/README.md)
 
 [Contribution Tobias Müller: One combined scanner](two_scans/README.md)
 
