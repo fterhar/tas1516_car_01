@@ -13,13 +13,15 @@ int main(int argc, char **argv)
 
   ros::Rate loop_rate(100); //every 10 ms (100 Hz)
 
-  
+  bool pub_now = true;
 
   while (ros::ok())	//this returns false if e.g. CTRL-C is hit
   {
     wiimote::State msg;
+    ROS_INFO("Enter key");
     int pressed = getchar();
 
+    
     switch(pressed)
     {
 	case 'a':
@@ -29,6 +31,7 @@ int main(int argc, char **argv)
 	     msg.nunchuk_buttons[1] = true;
 	     break;
 	case '\n':
+	     pub_now = false;
 	     break;
 	default:
 	     msg.buttons[4] = false;
@@ -37,7 +40,10 @@ int main(int argc, char **argv)
 
     }
 
-    pub.publish(msg);	//broadcast message to anyone who is connected
+    if(pub_now)
+	pub.publish(msg);	//broadcast message to anyone who is connected
+    else
+	pub_now = true;
 
     ros::spinOnce();	//provide callbacks
 
