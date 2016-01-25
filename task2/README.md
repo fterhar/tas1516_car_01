@@ -1,6 +1,6 @@
 # Documentation second task: Slalom
 
-The second task consists of one node "CP.py". The code is in the file: https://github.com/tas1516-group-01/tas1516_car_01/task2/src/CP.py
+The second task consists of one node "CP.py". The code is in the file: https://github.com/tas1516-group-01/tas1516_car_01/blob/master/task2/src/CP.py
 
 Program Flow:
   1. Initialization: reads the config file, starts the action server, sets the initional position (start position 2) of the car, and publishes the position to the topic "initialpose"
