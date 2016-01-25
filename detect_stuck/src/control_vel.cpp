@@ -6,6 +6,7 @@
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/Twist.h>
 #include "control/control.h"
+#include <boost/circular_buffer.hpp>
  
 float real_linear_vel_x = 0;
 float real_linear_vel_y = 0;
@@ -15,13 +16,38 @@ float needed_linear_vel_x;
 float needed_linear_vel_y;
 float needed_angular_vel_z;
 
+const int length = 10;
+
+boost::circular_buffer<int> xBuffer(length);
+boost::circular_buffer<int> yBuffer(length);
+
+/* Calculate mean of last values */
+float mean(boost::circular_buffer<int>* vals){\
+    float mean = 0;
+
+    for(int i = 0 ;i < vals->size(); i++){
+        mean += vals->at(i);
+
+    }
+    mean /= vals->size();
+
+    return mean;
+}
+
+
+
 static bool flg = false;
 
 //receive real velocity values based on fake odometry and set the flag to true
 void realCallback(const nav_msgs::Odometry::ConstPtr& odom)
 {
+
   real_linear_vel_x = odom->twist.twist.linear.x;
+  xBuffer.push_back(odom->twist.twist.linear.x);
+
   real_linear_vel_y = odom->twist.twist.linear.y;
+  yBuffer.push_back(odom->twist.twist.linear.y);
+
   real_angular_vel_z = odom->twist.twist.angular.z;
   flg = true;
 }
@@ -61,13 +87,18 @@ int main(int argc, char **argv)
 	ROS_INFO("Current velocity: [%lf,%lf,%lf]", real_linear_vel_x, real_linear_vel_y, real_angular_vel_z);
 
 
-	if((abs(needed_linear_vel_x) > 0 && real_linear_vel_x == 0) || (abs(needed_linear_vel_y) > 0 && real_linear_vel_y == 0))
+    ROS_INFO("%f, %f, %f, %f", (fabs(needed_angular_vel_z)), (fabs(mean(&xBuffer))), (fabs(needed_angular_vel_z)), (fabs(mean(&yBuffer))));
+    if((fabs(needed_angular_vel_z) > 0 && fabs(mean(&xBuffer)) < 0.01) || (fabs(needed_angular_vel_z) > 0 && fabs(mean(&yBuffer)) == 0.01))
 	{
 		cnt++;
-	}
+        ROS_INFO("count %i", cnt);
+    } else {
+        cnt = 0;
+    }
 	
-	if(cnt > 1000)
+    if(cnt > 5)
 	{
+        ROS_INFO("other node started");
 		system("rosrun publish_short_moves short_moves_pub");
 		cnt = 0;
 	}

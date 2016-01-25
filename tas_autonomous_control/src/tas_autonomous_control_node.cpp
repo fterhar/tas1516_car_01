@@ -1,11 +1,25 @@
 #include "control/control.h"
+#include <std_msgs/Bool.h>
+
+bool stop = false;
+
+void stopCallback(const std_msgs::Bool::ConstPtr& stp)
+{
+     ROS_INFO("flag changed");
+     stop = stp.get()->data;	//received flag by short_moves_pub node if it publishes to servo
+}
 
 int main(int argc, char** argv)
 {
+
     ros::init(argc, argv, "autonomous_control");
+    ros::NodeHandle nh_;
+    ros::Subscriber interrupt = nh_.subscribe<std_msgs::Bool>("/interrupt",100, &stopCallback);
     control autonomous_control;
 
     ros::Rate loop_rate(50);
+
+
 
     while(ros::ok())
     {
@@ -42,7 +56,15 @@ int main(int argc, char** argv)
                 autonomous_control.control_servo.y = autonomous_control.cmd_steeringAngle + 80;
             }
 
-            autonomous_control.control_servo_pub_.publish(autonomous_control.control_servo);
+            if(!stop)
+            {
+                ROS_INFO("active");
+                autonomous_control.control_servo_pub_.publish(autonomous_control.control_servo);
+            }
+            else
+                ROS_INFO("blocked");
+
+
 
         }
 
