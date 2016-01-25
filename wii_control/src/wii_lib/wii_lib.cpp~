@@ -19,7 +19,7 @@ wii_lib::wii_lib()
     stop = false;   //stop flag which is set to indicate if wii communication active (AC)
 }
 
-//callback to set stop flag (AC)
+//callback to set stop flag
 void wii_lib::stopCallback(const std_msgs::Bool::ConstPtr& stp)
 {
      ROS_INFO("flag changed");

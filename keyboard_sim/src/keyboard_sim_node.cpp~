@@ -17,8 +17,6 @@ int main(int argc, char **argv)
 
   while (ros::ok())	//this returns false if e.g. CTRL-C is hit
   {
-    //simulation for the wii_controller to test the A-Button recording of waypoints
-    //simulate the buttons 'a' and 'c' for recording and for executing, send this as replacement for wiimote/state
     wiimote::State msg;
     ROS_INFO("Enter key");
     int pressed = getchar();

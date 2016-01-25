@@ -18,7 +18,6 @@ float needed_angular_vel_z;
 
 const int length = 5;
 
-//create ring buffers
 boost::circular_buffer<float> xBuffer(length);
 boost::circular_buffer<float> yBuffer(length);
 
@@ -39,7 +38,7 @@ float mean(boost::circular_buffer<float>* vals){\
 
 static bool flg = false;
 
-//receive real velocity values based on odom topic and set the flag to true to indicate that it arrived
+//receive real velocity values based on fake odometry and set the flag to true
 void realCallback(const nav_msgs::Odometry::ConstPtr& odom)
 {
 
@@ -79,14 +78,14 @@ int main(int argc, char **argv)
 
   while(n.ok())
   {
+     //make bang-bang-control based on the arrival of the real velocity value (then the flag will be true)
      ros::spinOnce();
      if(flg)
      {
 	ROS_INFO("Both received!");
 
 
-	//if the needed angular velocity is not 0, which is the case when the car gets stuck, and the mean value of the last velocity values 
-	//in x and y orientation is below the threshold increase the counter
+
     if((fabs(needed_angular_vel_z) > 0 && fabs(mean(&xBuffer)) < 0.01 && fabs(mean(&yBuffer)) < 0.01))
 	{
 		cnt++;
@@ -98,7 +97,7 @@ int main(int argc, char **argv)
     } else {
         cnt = 0;
     }
-	//if the counter fulfills the condition the node "publish_short_moves" is executed for moving backwards
+	
     if(cnt > 5)
 	{
         ROS_INFO("other node started");
@@ -106,7 +105,39 @@ int main(int argc, char **argv)
 		cnt = 0;
 	}
 
+	/*	
 	
+	//when threshold value is reached increase/decrease (depending on reaching upper or lower threshold) the velocity by publishing 	//a appropriate servo value	
+	if(needed_linear_vel_x > 0.1 || needed_linear_vel_y > 0.1)
+	{
+		if(needed_linear_vel_x - real_linear_vel_x > 0.1 || needed_linear_vel_y - real_linear_vel_y > 0.1)
+		{
+		   move_control.control_servo.x = 1550;
+		   move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+		   ROS_INFO("too slow - forwards");
+		}
+		if(needed_linear_vel_x - real_linear_vel_x < -0.1 || needed_linear_vel_x - real_linear_vel_x < -0.1)
+		{
+		   move_control.control_servo.x = 1500;
+		   move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+		   ROS_INFO("too fast - forwards");
+		}
+	}
+	if(needed_linear_vel_x < -0.1 || needed_linear_vel_y < -0.1)
+	{
+		if(needed_linear_vel_x - real_linear_vel_x < -0.1 || needed_linear_vel_y - real_linear_vel_y < -0.1)
+		{
+		   move_control.control_servo.x = 1300;
+		   move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+		   ROS_INFO("too slow - backwards");
+		}
+		if(needed_linear_vel_x - real_linear_vel_x > 0.1 || needed_linear_vel_y - real_linear_vel_y > 0.1)
+		{
+		   move_control.control_servo.x = 1500;
+		   move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
+		   ROS_INFO("too fast - backwards");
+		}
+	}*/
 	flg = false;
      }
      r.sleep();

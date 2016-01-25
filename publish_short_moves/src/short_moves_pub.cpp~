@@ -77,7 +77,7 @@ int main(int argc, char **argv)
     }
 
 */
-    if (count == 500)		//move backwards
+    if (count == 500)	//first accelerate
     {
         msg.data = true;
         ROS_INFO("stop wii");
@@ -114,6 +114,11 @@ int main(int argc, char **argv)
     }
     ros::spinOnce();	//provide callbacks
 
+    //prevent an overflow
+    /*if(count == 10000)
+    {
+        count = 8000;
+    }*/
     count++;
 
     loop_rate.sleep();
