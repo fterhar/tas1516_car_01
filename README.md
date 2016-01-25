@@ -5,6 +5,7 @@ Documentation
 Contributions Tobias Müller:
 [Contribution Tobias Müller: One combined scanner](two_scans/README.md)
 
+<<<<<<< HEAD
 Contributions Anthony Carnevale:
 [Contribution Anthony Carnevale: Execute short moves for better localization](publish_short_moves/README.md)
 [Contribution Anthony Carnevale: Move backwards if next goal can't be reached](detect_stuck/README.md)
@@ -12,6 +13,11 @@ Contributions Anthony Carnevale:
 additional contributions:
 [Contribution Anthony Carnevale: Set initial_pose](publish_pose_init)
 [Contribution Anthony Carnevale: Publish some hardcoded goals](publish_goals)
+=======
+[Contribution Fynn Terhar: Speed gain for the straight hallways](tas_speed_gain/README.md)
+
+[Contribution Fynn Terhar: Node for training a path to the robot](tas_waypoints/README.md)
+>>>>>>> 115b8f04102819b89336c390889d6b5127e2ef40
 
 tas_car
 =======

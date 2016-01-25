@@ -14,6 +14,7 @@ Point::Point(float x, float y){
     Point::x = x, Point::y = y;
 }
 
+/* Needed for visualization of the rectangles in rviz */
 float Point::getAngle(Point p1, Point p2){
    ROS_INFO("Call: getAngle: %f,%f", fabs(p1.x-p2.x), fabs(p1.x-p2.x));
    if(fabs(p1.x - p2.x) != 0){ 

@@ -134,37 +134,4 @@ geometry_msgs::PoseArray control::rectsToPoseArray(Rect r1, Rect r2, \
 	return posearray;
 }
 
-//geometry_msgs::PoseArray control::rectsToPoseArray(Rect r1, Rect r2, \
-//						   Rect r3, Rect r4){
-//	geometry_msgs::PoseArray posearray;
-//	posearray.header.stamp = ros::Time::now();
-//	posearray.header.frame_id = "/map"; //"/world"
-//	posearray.poses.resize(8);
-//	std::vector<Rect> rectarray(4);
-//	rectarray[0] = r1;
-//	rectarray[1] = r2;
-//	rectarray[2] = r3;
-//	rectarray[3] = r4;
-//	unsigned i,j;
-//	for (i=j=0; i < posearray.poses.size(); i+=2, j++){
-//	   posearray.poses[i].position.x = rectarray[j].p1.x;
-//	   posearray.poses[i].position.y = rectarray[j].p1.y;
-//	   posearray.poses[i].position.z = 0;
-//	   posearray.poses[i].orientation.x = 0;
-//	   posearray.poses[i].orientation.y = 0;
-//	   posearray.poses[i].orientation.z = 0;
-//	   posearray.poses[i].orientation.w = 0;
-//
-//	   posearray.poses[i+1].position.x = rectarray[j].p2.x;
-//	   posearray.poses[i+1].position.y = rectarray[j].p2.y;
-//	   posearray.poses[i+1].position.z = 0;
-//	   posearray.poses[i+1].orientation.x = 0;
-//	   posearray.poses[i+1].orientation.y = 0;
-//	   posearray.poses[i+1].orientation.z = 0;
-//	   posearray.poses[i+1].orientation.w = 0;
-//	   ROS_INFO("POSE TRANSFORM %d", i);
-//
-//	}
-//
-//	return posearray;
-//}
+

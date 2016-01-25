@@ -1,6 +1,8 @@
 /*
  * Created by:  Fynn Terhar
  * Modified by: -
+ * Description: This class implements a simple point in 2D
+ * 		It is used for the rectangles
  */
 
 #ifndef POINT_H

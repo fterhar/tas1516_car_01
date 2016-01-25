@@ -14,19 +14,17 @@
 #include "point.h"
 #include <tf/transform_listener.h>
 
+/* This is a rectangle class, used to specify an area where
+ * speed gain is active */
 class Rect{
-
-    /* This is a rectangle class,
-       used to specify an area where
-       speed gain is active */
 
     public:
  	Rect();
 	Rect(Point p1, Point p2);
 	bool isInside(Point p);
 	boost::array<geometry_msgs::Pose, 6> asPoses();
-	Point p1; //Links unten
-	Point p2; //Rechts unten
+	Point p1; //Bottom left
+	Point p2; //Top right
     private:
 	boost::array<geometry_msgs::Pose, 6> generatePosesPos(Point, Point);
 	boost::array<geometry_msgs::Pose, 6> generatePosesNeg(Point, Point);
