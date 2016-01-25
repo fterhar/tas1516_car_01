@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 
     else if (count == 700)
     {
-        move_control.control_servo.x = 1550;
+        move_control.control_servo.x = 1555;
         move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
 
@@ -62,20 +62,21 @@ int main(int argc, char **argv)
 
     else if (count == 2200)
     {
-        move_control.control_servo.x = 1300;
+        move_control.control_servo.x = 1450;
         move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
     
-    else if (count == 3000)	//and break
+    else if (count == 2700)	//and break
     {
         msg.data = false;
         ROS_INFO("free wii");    //make wii_comunication know that it now can send to servo topic again by sending false
         short_moves_pub.publish(msg);
         move_control.control_servo.x = 1500;
         move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
-    }*/
+        break;
+    }
 
-
+*/
     if (count == 500)	//first accelerate
     {
         msg.data = true;
@@ -86,7 +87,7 @@ int main(int argc, char **argv)
     }
     else if (count == 600)
     {
-        move_control.control_servo.x = 1300;
+        move_control.control_servo.x = 1450;
         move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
 
@@ -98,11 +99,11 @@ int main(int argc, char **argv)
 
     else if (count == 800)
     {
-        move_control.control_servo.x = 1300;
+        move_control.control_servo.x = 1450;
         move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
     }
 
-    else if (count == 3000)	//and break
+    else if (count == 1800)	//and break
     {
         msg.data = false;
         ROS_INFO("free wii");    //make wii_comunication know that it now can send to servo topic again by sending false
@@ -114,10 +115,10 @@ int main(int argc, char **argv)
     ros::spinOnce();	//provide callbacks
 
     //prevent an overflow
-    if(count == 10000)
+    /*if(count == 10000)
     {
         count = 8000;
-    }
+    }*/
     count++;
 
     loop_rate.sleep();

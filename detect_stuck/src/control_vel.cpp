@@ -16,13 +16,13 @@ float needed_linear_vel_x;
 float needed_linear_vel_y;
 float needed_angular_vel_z;
 
-const int length = 10;
+const int length = 5;
 
-boost::circular_buffer<int> xBuffer(length);
-boost::circular_buffer<int> yBuffer(length);
+boost::circular_buffer<float> xBuffer(length);
+boost::circular_buffer<float> yBuffer(length);
 
 /* Calculate mean of last values */
-float mean(boost::circular_buffer<int>* vals){\
+float mean(boost::circular_buffer<float>* vals){\
     float mean = 0;
 
     for(int i = 0 ;i < vals->size(); i++){
@@ -83,15 +83,17 @@ int main(int argc, char **argv)
      if(flg)
      {
 	ROS_INFO("Both received!");
-	ROS_INFO("Needed velocity: [%lf,%lf,%lf]", needed_linear_vel_x, needed_linear_vel_y, needed_angular_vel_z);
-	ROS_INFO("Current velocity: [%lf,%lf,%lf]", real_linear_vel_x, real_linear_vel_y, real_angular_vel_z);
 
 
-    ROS_INFO("%f, %f, %f, %f", (fabs(needed_angular_vel_z)), (fabs(mean(&xBuffer))), (fabs(needed_angular_vel_z)), (fabs(mean(&yBuffer))));
-    if((fabs(needed_angular_vel_z) > 0 && fabs(mean(&xBuffer)) < 0.01) || (fabs(needed_angular_vel_z) > 0 && fabs(mean(&yBuffer)) == 0.01))
+
+    if((fabs(needed_angular_vel_z) > 0 && fabs(mean(&xBuffer)) < 0.01 && fabs(mean(&yBuffer)) < 0.01))
 	{
 		cnt++;
         ROS_INFO("count %i", cnt);
+        ROS_INFO("Z: %f, xMean: %f, yMean:%f", (fabs(needed_angular_vel_z)), (fabs(mean(&xBuffer))), (fabs(mean(&yBuffer))));
+        ROS_INFO("Needed velocity: [%lf,%lf,%lf]", needed_linear_vel_x, needed_linear_vel_y, needed_angular_vel_z);
+        ROS_INFO("Current velocity: [%lf,%lf,%lf]", real_linear_vel_x, real_linear_vel_y, real_angular_vel_z);
+
     } else {
         cnt = 0;
     }
