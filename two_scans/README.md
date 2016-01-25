@@ -18,25 +18,35 @@ Before starting the node it is important to setup the configuration for hector_m
 
 Add in the move_base.launch file at the end of the specification the following line:
 
-<!-- Run AMCL -->
-<node pkg="amcl" type="amcl" name="amcl" respawn="true">
-  	...
-  	<remap from="scan" to="/two_scan"/>
-</node>
+`<!-- Run AMCL -->`
+
+`<node pkg="amcl" type="amcl" name="amcl" respawn="true">`
+
+`  	...`
+
+`  	<remap from="scan" to="/two_scan"/>`
+
+`</node>`
 
 Now we have to change the scan topic in the hector_mapping node:
 
-<!-- hector mapping -->
-<node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
-  	<!-- Default: <param name="scan_topic" value="scan" /> -->
-    <param name="scan_topic" value="/two_scan" />  <!-- Added -->
-    ...
-</node>
+`<!-- hector mapping -->`
+
+`<node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">`
+
+`  	<!-- Default: <param name="scan_topic" value="scan" /> -->`
+
+`   <param name="scan_topic" value="/two_scan" />  <!-- Added -->`
+
+`   ...`
+
+`</node>`
 
 The back scanner is using a own coordinate system. So we have to add the following line in the odom.launch file.
 
-<!-- Added: the back scanner requires a own coordiante system -->
-<node pkg="tf" type="static_transform_publisher" name="base_link_to_laser_back" args="-0.28 0.0 0.21 3.14 0 0 /base_link /laser_back 40" />
+`<!-- Added: the back scanner requires a own coordiante system -->`
+
+`<node pkg="tf" type="static_transform_publisher" name="base_link_to_laser_back" args="-0.28 0.0 0.21 3.14 0 0 /base_link /laser_back 40" />`
 
 Starting the node:
 
@@ -52,4 +62,4 @@ The converter will produce a well formed laserscan message, which is required by
 
 The following video shows the working code:
 
-https://www.dropbox.com/s/cvabxxo1geeikb7/Second_Task_Slalom.mp4?dl=0
+https://www.dropbox.com/s/bk8pposgng5lebi/Contribution_Tobias_Mueller_One_combined_scanner.mp4?dl=0
