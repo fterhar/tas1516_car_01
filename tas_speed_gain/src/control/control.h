@@ -2,6 +2,7 @@
 /*
  * Created by:  Fynn Terhar
  * Modified by: -
+ * Descriptiopn: This class implements the control logic for the speed_gain.
  */
 
 #ifndef CONTROL_H
@@ -23,6 +24,7 @@
 #include <cstdarg>
 #include <vector>
 
+//Switch to turn boost mode off totally
 #define BOOST_MODE_OFF 0 //1
 
 class control

@@ -2,6 +2,9 @@
 /*
  * Created by:  Fynn Terhar
  * Modified by: -
+ * Description: This node defines rectangles. The rectangles are
+ * 		placed at the straight parts of the hallways. They
+		multiply the cars speed by a factor.
  */
 
 #include "ros/ros.h"

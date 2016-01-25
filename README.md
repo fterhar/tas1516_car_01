@@ -4,6 +4,10 @@ Documentation
 
 [Contribution Tobias Müller: One combined scanner](two_scans/README.md)
 
+[Contribution Fynn Terhar: Speed gain for the straight hallways](tas_speed_gain/README.md)
+
+[Contribution Fynn Terhar: Node for training a path to the robot](tas_waypoints/README.md)
+
 tas_car
 =======
 Basic setup for the TAS stack

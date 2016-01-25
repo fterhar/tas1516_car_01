@@ -1,6 +1,9 @@
 /*
  * Created by:  Fynn Terhar
  * Modified by: -
+ * Description: This class declares the waypointhandler. Its core component is the
+ * 		goal thread. It runs and interpretes the user input from wii-mote.
+		It recordes and replays waypoints to achieve the learning of the robot.
  */
 
 #ifndef WAYPOINTHANDLER_H
@@ -11,7 +14,7 @@
 
 #include "std_msgs/Int16.h"
 #include "std_msgs/Float32.h"
-#include "std_msgs/Int16MultiArray.h"//TODO: Löschen?
+#include "std_msgs/Int16MultiArray.h"
 #include <wiimote/State.h>
 #include <math.h>
 #include <geometry_msgs/PoseArray.h>
@@ -32,6 +35,7 @@ typedef struct{
     bool C;		
 }WiiBtnState;
 
+// Goal States: GoalThread is implemented as an FSM
 enum goal_state_enum{Init, Record, Replay};
 typedef enum goal_state_enum Goal_state;
 
@@ -47,22 +51,18 @@ class Waypointhandler
 
         ros::Subscriber wii_communication_sub; 
    
+	// Objects for getting the current robot position on the map
         tf::TransformListener listener;
         tf::StampedTransform transform;
 
         //vector of goals, with position and orientation
         std::vector<geometry_msgs::Pose> waypoints;
 
-//	void doneCb(const actionlib::SimpleClientGoalState& scgs,\
-//		    const move_base_msgs::MoveBaseResultConstPtr& res); 
-//        void activeCb();
-//	void feedbackCb(\
-//		  const move_base_msgs::MoveBaseFeedbackConstPtr& fb); 
-
     private:
-	//boost::thread workerThread(&Waypointhandler::runGoalThread, this);
+	// This function is started from the constructor as a boost thread.
         void runGoalThread();
-
+	
+	// old and new button state to detect a rising edge.
         WiiBtnState oldBtnState;
         WiiBtnState btnState;
 

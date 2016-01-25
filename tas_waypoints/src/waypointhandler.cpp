@@ -125,6 +125,8 @@ void Waypointhandler::runGoalThread(){
             }//end of case 
     }//end of while(ros::ok)        
 }
+
+/* Constructor: Sets defaults and starts the GoalThread */
 Waypointhandler::Waypointhandler(){
  
     /* Init Buttonstates as false */    

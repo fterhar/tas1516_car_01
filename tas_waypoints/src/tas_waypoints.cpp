@@ -1,6 +1,8 @@
 /*
  * Created by:  Fynn Terhar
  * Modified by: -
+ * Description: This node lets the user record waypoints on the fly.
+ * They serve as training input so that the robot can learn a path.
  */
 
 #include "ros/ros.h"
@@ -20,12 +22,6 @@ int main(int argc, char **argv)
   ros::Rate loop_rate(50);
   while(ros::ok())  
   {
-//      speed_gain_controller.\
-//	speed_gain_pub.publish(speed_gain_controller.speed_gain_msg);
-//
-//      speed_gain_controller.\
-//	rect_pub.publish(speed_gain_controller.rect_msg);
-//
       ros::spinOnce();
 
       loop_rate.sleep();

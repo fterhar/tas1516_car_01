@@ -1,7 +1,9 @@
-
 /*
  * Created by:  Fynn Terhar
  * Modified by: -
+ * Description: This files implements all the functionality of a
+ * 		rectangle. It can check if a point is withing, or
+ * 		generate a visualization.
  */
 
 #include "rect.h"
@@ -21,6 +23,9 @@ Rect::Rect(Point p1, Point p2){
     Rect::p2.y = p2.y;
 }
 
+
+/* Checks if point pt is inside the Rectangle. This is used to
+ * detect wether the car is in a boost area or not */
 bool Rect::isInside(Point pt){
 
    if( (this->p1.x > this->p2.x) && (this->p1.y > this->p2.y) ){
@@ -37,7 +42,7 @@ bool Rect::isInside(Point pt){
    }
 }
 
-/* This function calculates Poses that describe a rect in */
+/* This function calculates Poses that describe the rects. Used for visualization.*/
 boost::array<geometry_msgs::Pose, 6> Rect::asPoses(){
     ROS_INFO("Call: asPoses");
     if( (this->p1.x > this->p2.x) && (this->p1.y > this->p2.y) ){
@@ -58,6 +63,9 @@ boost::array<geometry_msgs::Pose, 6> Rect::asPoses(){
    }
 }
 
+/* Generate Poses for positive angle case.
+   Given two points that make up a rectangle, this method
+   calculates Poses with correct */
 boost::array<geometry_msgs::Pose, 6> Rect::generatePosesNeg(Point pa, Point pb){
 //2_3
    ROS_INFO("Call: generatePosesNeg"); 
@@ -132,23 +140,18 @@ boost::array<geometry_msgs::Pose, 6> Rect::generatePosesPos(Point pa, Point pb){
 					 Point::getAngle(pa, pb)); 
    poses[1].orientation =\
 	tf::createQuaternionMsgFromYaw(M_PI/2);
+
    poses[2].orientation = \
 	tf::createQuaternionMsgFromYaw(M_PI);
+
    poses[3].orientation = \
 	tf::createQuaternionMsgFromYaw(M_PI - \
 			 Point::getAngle(pa, pb) + M_PI);
    poses[4].orientation = \
 	tf::createQuaternionMsgFromYaw(0);
+
    poses[5].orientation = \
 	tf::createQuaternionMsgFromYaw(3 * M_PI/2);
 
-
-//   poses[0].orientation.w = M_PI + Point::getAngle(pa, pb); 
-//   poses[1].orientation.w = M_PI;
-//   poses[2].orientation.w = 2 * M_PI;
-//   poses[3].orientation.w = poses[0].orientation.w + 2 * M_PI;
-//   poses[4].orientation.w = 0;
-//   poses[5].orientation.w = 3 * M_PI;
- 
    return poses;
 }
