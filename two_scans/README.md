@@ -1,22 +1,17 @@
 # Contribution Tobias Müller: One combined scanner
 
-The contribution consists of one node "CP.py", one launch file, and multiple configuration changes. The code is in the file: https://github.com/tas1516-group-01/tas1516_car_01/task2/src/CP.py
+The contribution consists of one node "two_scans_node", one launch file, and multiple configuration changes. The code is in the file: https://github.com/tas1516-group-01/tas1516_car_01/blob/master/two_scans/src/two_scans_node.cpp
 
 Program Flow:
-  1. Initialization: reads the config file, starts the action server, sets the initional position (start position 2) of the car, and publishes the position to the topic "initialpose"
-  2. After starting the action server the robot can receive goals. The first goal is the planner position. The position is important, because the robot needs an overview over the whole obstacle for the planning task. The starting position is a bad position for planning, because only the first pylon is visible by the front scanner.
-  3. If the robot reach the planning position (left side of the first pylon), it will start with the planning task:
-  	1. Recognition of the pylons and their distance to the car
-  	2. Validation of the detected pylons (valid distance, distance to wall, distance one pylon to another)
-  	3. Setting goals: seven goals will be set: Between the pylons and left/right side of the pylons
-  	4. The integrated planner of the car will plan the path through the obstacle.
-  4. After planning the goals the car will start driving through the obstacle.
+  1. Initialization: Subscribe the front and back scan topic, publish combined scan signal and sets the listener for the transformation.
+  2. For the processing of both scanner signals two callback functions (front and back scanner) are required. The callback functions will receive the scan information and processes the coordinate system transformation from the laser into the target frame of the combined scanner. Then the signal will be converted into a pointcloud and be saved into class varibale for later usage.
+  3. If both scanner signals were received and the time difference of the signals are less then 20 ms, a combined scan signal is published. Otherwise only the front scanner signal will be published. A separated submission of both signals is not possible, because the simulated combined scanner requires a constant timestep between two signals.
 
 ## Execution
 
-Before starting the node it is important to setup the configuration for hector_mapping and amcl. Per default this nodes will use the topic "scan" for their algorithms.
+Before starting the node it is important to set up the configuration for hector_mapping and amcl. Per default this nodes will use the topic "scan" for their algorithms.
 
-Add in the move_base.launch file at the end of the specification the following line:
+Add at the end of the specification of the move_base.launch file the following line:
 
 `<!-- Run AMCL -->`
 
