@@ -7,7 +7,7 @@
   <!-- Run map server  -->
   <node name="map_server" pkg="map_server" type="map_server" args="$(find tas)/launch/config/map_server/LSR_3.yaml"/>
 
-   <!-- Run AMCL --><!-- Run AMCL -->
+   <!-- Run AMCL -->
  <node pkg="amcl" type="amcl" name="amcl" respawn="true">
 
 	  <!-- ROS framework parameters -->
@@ -62,8 +62,8 @@
 	  <param name="odom_alpha3" value="1.0"/>
 	  <param name="odom_alpha4" value="0.5"/>
 
-          <!-- changed by Tobias -->
-          <!-- <remap from="scan" to="/two_scan"/> -->
+          <!-- changed by Tobias
+          <remap from="scan" to="two_scan"/>-->
 
 
   </node>
