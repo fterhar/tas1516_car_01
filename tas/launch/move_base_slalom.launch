@@ -72,11 +72,11 @@
 
   <!-- Original Move Base-->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
-    <rosparam file="$(find tas)/launch/config/move_base/round/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find tas)/launch/config/move_base/round/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find tas)/launch/config/move_base/round/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find tas)/launch/config/move_base/round/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find tas)/launch/config/move_base/round/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find tas)/launch/config/move_base/slalom/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find tas)/launch/config/move_base/slalom/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find tas)/launch/config/move_base/slalom/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find tas)/launch/config/move_base/slalom/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find tas)/launch/config/move_base/slalom/base_local_planner_params.yaml" command="load" />
   </node>
 
   <!-- Run trajectory control -->
