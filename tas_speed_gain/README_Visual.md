@@ -2,6 +2,7 @@
 
 The contribution consists of one node "tas_speed_gain". It defines areas on the map using rectangles. It measures the current position of the robot, to detect if it is in a defined rectangle. The was designed to have a good speed on the straight parts of the hallway.
 
+
 This contribution adresses the goal of visualizing the rectangles that are used for speeding up the robot in rviz. This is very useful for testing, since otherwise the rectangles were invisible and therefore testing was hard to be done. The visualization is achieved by functions, that convert an array of rectangles into a PoseArray object. This is a workaround, because there was no direct way of drawing rectangles into rviz. This contribution transforms each point of a rectangle into three poses because a pose in rviz is drawn as a colored pointer. Two of the poses form the edge of the rectangle and the third pose points to the other point. The pose array must now only be subscribed to in rviz. It is recomended to change the size of the poses because it makes the rectangles easier to see and interpret as rectangles.
 =================================================================
 

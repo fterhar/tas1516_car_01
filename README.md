@@ -38,7 +38,7 @@ additional contributions:
 
 [Contribution Fynn Terhar: Training a path to the robot](tas_waypoints/README_Record.md)
 
-[Contribution Fynn Terhar: Following a previously trained path](tas_waypoints/Replay.md)
+[Contribution Fynn Terhar: Following a previously trained path](tas_waypoints/README_Replay.md)
 
 tas_car
 =======
