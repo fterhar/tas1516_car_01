@@ -4,6 +4,7 @@ Documentation
 
 Contributions Tobias Müller:
 [Contribution Tobias Müller: One combined scanner](two_scans/README.md)
+[Contribution Tobias Müller: Set Initional Pose and Planning Position for Slalom Task](task2/Contribution_Tobias_Mueller_Set_Initional_Pose_and_Planning_Position.md)
 
 Contributions Anthony Carnevale:
 [Contribution Anthony Carnevale: Execute short moves for better localization](publish_short_moves/README.md)
