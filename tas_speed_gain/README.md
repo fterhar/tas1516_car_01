@@ -17,4 +17,3 @@ Simply run the tas_speed_gain node. It requires the wii_mote to be running as we
 
 https://www.dropbox.com/s/5adgjds2mt64g9y/speed_gain_video.MOV?dl=0
 
--- TO BE ADDED --

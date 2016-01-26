@@ -12,8 +12,4 @@ Program Flow:
 Simply run the tas_waypoints node. It is important to have a respective movebase_server running. The tas_waypoints node will be waiting on a movebase_server to be ready before it can fully function. It can be closed by Ctrl-C as usual.
 
 
-## Video
 
-The following video shows the working code:
-
--- TO BE ADDED --
