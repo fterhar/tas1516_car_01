@@ -3,7 +3,6 @@
 
 bool stop = false;
 
-//callback function for receiving flag from short_moves_pub (AC)
 void stopCallback(const std_msgs::Bool::ConstPtr& stp)
 {
      ROS_INFO("flag changed");
@@ -15,7 +14,7 @@ int main(int argc, char** argv)
 
     ros::init(argc, argv, "autonomous_control");
     ros::NodeHandle nh_;
-    ros::Subscriber interrupt = nh_.subscribe<std_msgs::Bool>("/interrupt",100, &stopCallback);	//subscribe to topic interrupt (AC)
+    ros::Subscriber interrupt = nh_.subscribe<std_msgs::Bool>("/interrupt",100, &stopCallback);
     control autonomous_control;
 
     ros::Rate loop_rate(50);
@@ -40,10 +39,13 @@ int main(int argc, char** argv)
                 ROS_INFO("Automatic Control!");
                 if(autonomous_control.cmd_linearVelocity>0)
                 {
-                    autonomous_control.control_servo.x = 1550;
+                    autonomous_control.control_servo.x = 1500 + 55 * autonomous_control.speed_gain_factor; //1550;
+                  //autonomous_control.control_servo.x = 1500 + 400 * autonomous_control.cmd_linearVelocity;    //AC velocity adaption positive
+                  //autonomous_control.control_servo.x = 1550;
                 }
                 else if(autonomous_control.cmd_linearVelocity<0)
                 {
+                  //autonomous_control.control_servo.x = 1500 + 200 * autonomous_control.cmd_linearVelocity;    //AC velocity adaption negative
                     autonomous_control.control_servo.x = 1300;
                 }
                 else
@@ -53,7 +55,7 @@ int main(int argc, char** argv)
 
                 autonomous_control.control_servo.y = autonomous_control.cmd_steeringAngle + 80;
             }
-	    //only enable publishing of autonomous control node if stop flag is not set (AC)
+
             if(!stop)
             {
                 ROS_INFO("active");

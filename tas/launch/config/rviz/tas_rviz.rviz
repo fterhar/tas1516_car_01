@@ -35,7 +35,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -105,9 +105,7 @@ Visualization Manager:
           Value: true
         laser:
           Value: true
-        map:
-          Value: true
-        odom:
+        laser_back:
           Value: true
         scanmatcher_frame:
           Value: true
@@ -117,14 +115,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          odom:
-            scanmatcher_frame:
-              base_link:
-                base_imu:
-                  {}
-                laser:
-                  {}
+        {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -196,15 +187,15 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 17.387
-        Y: 10.7762
-        Z: -8.17145
+        X: 17.0714
+        Y: 14.5867
+        Z: -6.37653
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 1.5698
+      Pitch: 0.844797
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.62677
+      Yaw: 4.65677
     Saved: ~
 Window Geometry:
   Displays:

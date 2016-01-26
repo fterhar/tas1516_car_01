@@ -26,10 +26,15 @@ control::control()
 	("wii_communication",1000,&control::wiiCommunicationCallback,\
 	 this);
     
-    R1 = Rect( Point(28.9, 22.6), Point(35.3, 18.9));
-    R2 = Rect( Point(31.8, 10.3), Point(40.3, 17.1));
-    R3 = Rect( Point(22.7, 35.0), Point(30.5, 12.6));
-    R4 = Rect( Point(20.2, 0.00), Point(27.9, 21.9));
+    R1 = Rect( Point(14.2, 21.0), Point(20.6, 18.1));
+    R2 = Rect( Point(22.0, 17.4), Point(24.9, 8.5));
+    R3 = Rect( Point(12.2, 8.5), Point(20.6, 4.39));
+    R4 = Rect( Point(8.97, 17.6), Point(12.4, 8.95));
+
+    //R1 = Rect( Point(28.9, 22.6), Point(35.3, 18.9));
+    //R2 = Rect( Point(31.8, 10.3), Point(40.3, 17.1));
+    //R3 = Rect( Point(22.7, 35.0), Point(30.5, 12.6));
+    //R4 = Rect( Point(20.2, 0.00), Point(27.9, 21.9));
     
     rect_msg = rectsToPoseArray(R1, R2, R3, R4);
     speed_gain_msg.data = 1.0; /* Initially no speed gain */    
