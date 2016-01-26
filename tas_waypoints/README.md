@@ -5,6 +5,7 @@ The contribution consists of one node "tas_waypoints" It consists of all files i
 =================================================================
 
 Program Flow:
+
 1. When starting the node, it first establishes a connection to a running movebase_server. If the server is not running yet, it retries until success.
 
 2. The program will now be in recording mode. Whenever the user presses the A-Button on the Wii-Mote, the node will store a waypoint object in a dynamic vector. The waypoint is set at the position where the robot is on the map. The programm will stay in this recording mode, until the user presses C-Button on the Nunchuk. It then enters Replay-Mode.
