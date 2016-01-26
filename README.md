@@ -32,13 +32,13 @@ additional contributions:
 
 ### Contributions Fynn Terhar
 
-[Contribution Fynn Terhar: Speed gain for the straight hallways](tas_speed_gain/README.md)
+[Contribution Fynn Terhar: Speed gain for the straight hallways](tas_speed_gain/README_Function.md)
 
-[Contribution Fynn Terhar: RVIZ visualization support for speed gain](tas_speed_gain/README.md)
+[Contribution Fynn Terhar: RVIZ visualization support for speed gain](tas_speed_gain/README_Visual.md)
 
-[Contribution Fynn Terhar: Training a path to the robot](tas_waypoints/README.md)
+[Contribution Fynn Terhar: Training a path to the robot](tas_waypoints/README_Record.md)
 
-[Contribution Fynn Terhar: Following a previously trained path](tas_waypoints/README.md)
+[Contribution Fynn Terhar: Following a previously trained path](tas_waypoints/Replay.md)
 
 tas_car
 =======
