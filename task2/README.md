@@ -24,4 +24,4 @@ Starting the node:
 
 The following video shows the working code:
 
-https://www.dropbox.com/s/cvabxxo1geeikb7/Second_Task_Slalom.mp4?dl=0
+https://www.dropbox.com/s/1tjf8q5szqpcldp/Group%2001%20-%20Slalom%20task.mp4?dl=0
