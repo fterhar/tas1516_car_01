@@ -6,4 +6,4 @@ This decribes how the round task was done. We used tas_waypoints node to train a
 
 The following video shows the working code:
 
-<TO BE ADDED>
+https://www.dropbox.com/s/2lclo116d31w0nh/Group%2001%20-%20Round%20task.mp4?dl=0
