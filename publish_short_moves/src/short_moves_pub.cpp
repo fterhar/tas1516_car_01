@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 
   ros::Publisher short_moves_pub = n.advertise<std_msgs::Bool>("/interrupt", 100);	//publisher to new topic interrupt
 
-  ros::Rate loop_rate(1000); //every second (1 kHz)
+  ros::Rate loop_rate(1000); // (1 kHz)
 
   std_msgs::Bool msg;
 
@@ -110,7 +110,13 @@ int main(int argc, char **argv)
         short_moves_pub.publish(msg);
         move_control.control_servo.x = 1500;
         move_control.control_servo_pub_.publish(move_control.control_servo);	//broadcast message to anyone who is connected
-        break;
+	//ros::spinOnce();	//provide callbacks
+	//loop_rate.sleep();
+        
+    }
+    else if(count == 2000)
+    {
+	break;
     }
     ros::spinOnce();	//provide callbacks
 
