@@ -47,7 +47,9 @@ Starting the node:
 
 > rosrun two_scans two_scans_node
 
-Starting the converter for the pointcloud:
+Installing and starting the converter for the pointcloud:
+
+> (optional) sudo apt-get install ros-indigo-pointcloud-to-laserscan
 
 > roslaunch two_scans startCloudtoLaser.launch
 
