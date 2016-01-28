@@ -25,12 +25,16 @@ control::control()
     wii_communication_sub = nh_.subscribe<std_msgs::Int16MultiArray>\
 	("wii_communication",1000,&control::wiiCommunicationCallback,\
 	 this);
-    
-    R1 = Rect( Point(14.2, 21.0), Point(20.6, 18.1));
-    R2 = Rect( Point(22.0, 17.4), Point(24.9, 8.5));
-    R3 = Rect( Point(12.2, 8.5), Point(20.6, 4.39));
-    R4 = Rect( Point(8.97, 17.6), Point(12.4, 8.95));
-
+    R1 = Rect( Point(4.1, 5.7), Point(12.7, -1.8));
+    R2 = Rect( Point(13.5, -1), Point(18.9, -8.45));
+    R3 = Rect( Point(6,-8.9 ), Point(13.5, -13.5));
+    R4 = Rect( Point(0, -1.15), Point(4.9, -9.1));
+   
+//    R1 = Rect( Point(14.2, 21.0), Point(20.6, 18.1));
+//    R2 = Rect( Point(22.0, 17.4), Point(24.9, 8.5));
+//    R3 = Rect( Point(12.2, 8.5), Point(20.6, 4.39));
+//    R4 = Rect( Point(8.97, 17.6), Point(12.4, 8.95));
+//
     //R1 = Rect( Point(28.9, 22.6), Point(35.3, 18.9));
     //R2 = Rect( Point(31.8, 10.3), Point(40.3, 17.1));
     //R3 = Rect( Point(22.7, 35.0), Point(30.5, 12.6));
